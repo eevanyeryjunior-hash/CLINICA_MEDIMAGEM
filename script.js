@@ -84,6 +84,16 @@ scoreSlider.addEventListener('click', (e) => {
     smiley.classList.remove('animate');
     void smiley.offsetWidth; // força reflow
     smiley.classList.add('animate');
+
+    // 🪄 NOVO: rola suavemente até a área das opiniões
+    const opiniaoSection = document.querySelector('.right-panel');
+    if (opiniaoSection) {
+      opiniaoSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+
+      // ✨ Destaque suave na área de opinião
+      opiniaoSection.classList.add('highlight');
+      setTimeout(() => opiniaoSection.classList.remove('highlight'), 1500);
+    }
   }
 });
 
