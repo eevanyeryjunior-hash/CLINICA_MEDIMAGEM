@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Pesquisa de Satisfação - Clinica medimagem</title>
+  <title>Pesquisa de Satisfação - Clinica Medimagem</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -31,11 +31,8 @@
       <div id="smiley" class="smiley">🙂</div>
       <div class="slider-wrapper">
         <div class="slider" id="scoreSlider">
-          <!-- Linha 1: 0 a 4 -->
           <span>0</span><span>1</span><span>2</span><span>3</span><span>4</span>
-          <!-- Linha 2: 5 a 9 -->
           <span>5</span><span>6</span><span>7</span><span>8</span><span>9</span>
-          <!-- Linha 3: 10 -->
           <span>10</span>
         </div>
       </div>
@@ -62,6 +59,17 @@
     <p>Sua opinião foi registrada com sucesso.</p>
     <p>🙏 Agradecemos sua colaboração.</p>
     <button id="btnRelatorio" class="enviar">VER RELATÓRIO</button>
+  </div>
+
+  <!-- Modal de Login para Relatórios -->
+  <div class="overlay" id="loginOverlay" style="display:none;">
+    <div class="modal">
+      <h3>Acesso Restrito</h3>
+      <p>Digite seu usuário e senha para ver os relatórios.</p>
+      <input type="text" id="loginUser" placeholder="Usuário">
+      <input type="password" id="loginPass" placeholder="Senha">
+      <button onclick="verificarLogin()">ENTRAR</button>
+    </div>
   </div>
 
   <script src="script.js"></script>
