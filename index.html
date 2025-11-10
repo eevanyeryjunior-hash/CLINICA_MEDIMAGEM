@@ -71,37 +71,63 @@
       <button onclick="verificarLogin()">ENTRAR</button>
     </div>
   </div>
-  <!-- Tela de Relatórios -->
+<!-- Tela de Relatórios -->
 <div class="report-overlay" id="reportOverlay" style="display:none;">
   <div class="report-modal">
     <h3>Relatórios - Clinica Medimagem</h3>
 
-    <!-- Filtros -->
-    <div class="report-filters">
-      <label>Período de análise:
-        <input type="date" id="startDate"> até <input type="date" id="endDate">
-      </label>
-      <label>Categoria:
-        <select id="reportCategory">
-          <option value="espera">Espera</option>
-          <option value="estrutura">Estrutura</option>
-          <option value="recepcao">Recepção</option>
-          <option value="enfermagem">Enfermagem</option>
-          <option value="medicos">Médicos</option>
-          <option value="nota">Nota geral</option>
+    <!-- Seção de Filtros e Ações -->
+    <div class="report-header">
+      <div class="filter-group">
+        <label class="filter-title">
+          <i class="fas fa-calendar-alt"></i> Período de Análise
+        </label>
+        <select id="periodSelect" class="styled-select">
+          <option>Todos os dados</option>
+          <option>Últimos 7 dias</option>
+          <option>Últimos 30 dias</option>
+          <option>Últimos 90 dias</option>
         </select>
-      </label>
+      </div>
+
+      <div class="categories-group">
+        <label class="filter-title">
+          <i class="fas fa-filter"></i> Categorias Visíveis
+        </label>
+        <div class="checkbox-list">
+          <label><input type="checkbox" checked> Espera</label>
+          <label><input type="checkbox" checked> Estrutura</label>
+          <label><input type="checkbox" checked> Recepção</label>
+          <label><input type="checkbox" checked> Enfermagem</label>
+          <label><input type="checkbox" checked> Médicos</label>
+        </div>
+      </div>
+
+      <div class="actions-group">
+        <label class="filter-title">
+          <i class="fas fa-download"></i> Ações
+        </label>
+        <button class="btn blue" onclick="exportCSV()">⬇ Exportar CSV</button>
+        <button class="btn gray" onclick="atualizarDados()">⟳ Atualizar Dados</button>
+        <button class="btn green" onclick="gerarTodasContagens()">📈 Gerar Todas as Contagens</button>
+        <button class="btn red" onclick="zerarTodasContagens()">🗑️ Zerar Todas as Contagens</button>
+        <label class="auto-refresh"><input type="checkbox"> Auto-atualizar (5seg)</label>
+      </div>
     </div>
 
-    <!-- Ações -->
-    <div class="report-actions">
-      <button onclick="exportCSV()">Exportar CSV</button>
-      <button onclick="atualizarDados()">Atualizar Dados</button>
-      <button onclick="gerarTodasContagens()">Gerar Todas as Contagens</button>
-      <button onclick="zerarTodasContagens()">Zerar Todas as Contagens</button>
+    <hr>
+
+    <!-- Linha de métricas -->
+    <div class="metrics">
+      <div><strong>10</strong><span>Respostas</span></div>
+      <div><strong style="color:#27ae60;">60</strong><span>NPS Score</span></div>
+      <div><strong>0</strong><span>Comentários</span></div>
+      <div><strong style="color:#9b59b6;">80%</strong><span>Promotores</span></div>
     </div>
 
-    <!-- Tabela de dados (exemplo inicial) -->
+    <hr>
+
+    <!-- Tabela -->
     <table id="reportTable">
       <thead>
         <tr>
@@ -110,7 +136,7 @@
         </tr>
       </thead>
       <tbody>
-        <!-- Linhas populadas dinamicamente -->
+        <!-- Linhas geradas dinamicamente -->
       </tbody>
     </table>
 
