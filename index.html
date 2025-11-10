@@ -71,6 +71,52 @@
       <button onclick="verificarLogin()">ENTRAR</button>
     </div>
   </div>
+  <!-- Tela de Relatórios -->
+<div class="report-overlay" id="reportOverlay" style="display:none;">
+  <div class="report-modal">
+    <h3>Relatórios - Clinica Medimagem</h3>
+
+    <!-- Filtros -->
+    <div class="report-filters">
+      <label>Período de análise:
+        <input type="date" id="startDate"> até <input type="date" id="endDate">
+      </label>
+      <label>Categoria:
+        <select id="reportCategory">
+          <option value="espera">Espera</option>
+          <option value="estrutura">Estrutura</option>
+          <option value="recepcao">Recepção</option>
+          <option value="enfermagem">Enfermagem</option>
+          <option value="medicos">Médicos</option>
+          <option value="nota">Nota geral</option>
+        </select>
+      </label>
+    </div>
+
+    <!-- Ações -->
+    <div class="report-actions">
+      <button onclick="exportCSV()">Exportar CSV</button>
+      <button onclick="atualizarDados()">Atualizar Dados</button>
+      <button onclick="gerarTodasContagens()">Gerar Todas as Contagens</button>
+      <button onclick="zerarTodasContagens()">Zerar Todas as Contagens</button>
+    </div>
+
+    <!-- Tabela de dados (exemplo inicial) -->
+    <table id="reportTable">
+      <thead>
+        <tr>
+          <th>Categoria</th>
+          <th>Contagem</th>
+        </tr>
+      </thead>
+      <tbody>
+        <!-- Linhas populadas dinamicamente -->
+      </tbody>
+    </table>
+
+    <button class="closeReport" onclick="fecharRelatorio()">Fechar</button>
+  </div>
+</div>
 
   <script src="script.js"></script>
 </body>
