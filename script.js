@@ -1,3 +1,4 @@
+// Variáveis de elementos HTML
 const cpfInput = document.getElementById('cpf');
 const leftPanel = document.getElementById('leftPanel');
 const smiley = document.getElementById('smiley');
@@ -5,6 +6,12 @@ const scoreSlider = document.getElementById('scoreSlider');
 const enviarBtn = document.getElementById('btnEnviar');
 const thankYouScreen = document.getElementById('thankYouScreen');
 const btnRelatorio = document.getElementById('btnRelatorio');
+const loginOverlay = document.getElementById('loginOverlay');
+const reportOverlay = document.getElementById('reportOverlay');
+const reportTable = document.getElementById('reportTable');
+const exportCSVBtn = document.getElementById('exportCSV');
+const gerarContagensBtn = document.getElementById('gerarContagens');
+const zerarContagensBtn = document.getElementById('zerarContagens');
 
 // --- Máscara de CPF ---
 cpfInput.addEventListener('input', () => {
@@ -116,7 +123,7 @@ function voltarInicio() {
 
 // --- Botão Relatório ---
 btnRelatorio.addEventListener('click', () => {
-  document.getElementById('loginOverlay').style.display = 'flex';
+  loginOverlay.style.display = 'flex'; // Exibe o overlay de login
 });
 
 // --- Verificar login ---
@@ -125,85 +132,43 @@ function verificarLogin() {
   const pass = document.getElementById('loginPass').value.trim();
 
   if (user === 'admin' && pass === 'admin') {
-    document.getElementById('loginOverlay').style.display = 'none';
+    loginOverlay.style.display = 'none';
+    reportOverlay.style.display = 'flex';
     alert('✅ Login bem-sucedido! Exibindo relatórios...');
-    // Aqui você pode chamar a função para mostrar os relatórios
+    atualizarDados(); // Atualiza os dados do relatório após o login
   } else {
     alert('❌ Usuário ou senha incorretos!');
   }
 }
 
-// --- ENTER NO MODAL DE CPF ---
-cpfInput.addEventListener('keydown', (e) => {
-  if (e.key === 'Enter') {
-    e.preventDefault();
-    iniciarPesquisa();
-  }
-});
-
-// --- ENTER NO FEEDBACK (fora do textarea) ---
-document.addEventListener('keydown', (e) => {
-  if (e.key === 'Enter') {
-    if (document.activeElement.tagName === 'TEXTAREA') return; // não interferir no textarea
-    if (!enviarBtn.disabled) {
-      enviarFeedback();
-    }
-  }
-});
-
-// --- ENTER NO LOGIN ---
-const loginUser = document.getElementById('loginUser');
-const loginPass = document.getElementById('loginPass');
-
-[loginUser, loginPass].forEach(input => {
-  input.addEventListener('keydown', (e) => {
-    if (e.key === 'Enter') {
-      e.preventDefault();
-      verificarLogin();
-    }
-  });
-});
-// Após login correto, abrir tela de relatórios
-function verificarLogin() {
-  const user = document.getElementById('loginUser').value.trim();
-  const pass = document.getElementById('loginPass').value.trim();
-
-  if (user === 'admin' && pass === 'admin') {
-    document.getElementById('loginOverlay').style.display = 'none';
-    document.getElementById('reportOverlay').style.display = 'flex';
-    atualizarDados();
-  } else {
-    alert('❌ Usuário ou senha incorretos!');
-  }
-}
-
-// Fechar relatório
+// --- Fechar relatório ---
 function fecharRelatorio() {
-  document.getElementById('reportOverlay').style.display = 'none';
+  reportOverlay.style.display = 'none';
 }
 
-// Função para atualizar dados na tabela (exemplo com contagens fictícias)
+// Função para atualizar dados na tabela (contagem fictícia)
 function atualizarDados() {
-  const tbody = document.getElementById('reportTable').querySelector('tbody');
-  tbody.innerHTML = '';
+  const tbody = reportTable.querySelector('tbody');
+  tbody.innerHTML = ''; // Limpa a tabela
 
   const categorias = ['Espera', 'Estrutura', 'Recepção', 'Enfermagem', 'Médicos', 'Nota geral'];
   categorias.forEach(cat => {
     const row = document.createElement('tr');
-    row.innerHTML = `<td>${cat}</td><td>${Math.floor(Math.random()*100)}</td>`;
+    row.innerHTML = `<td>${cat}</td><td>${Math.floor(Math.random() * 100)}</td>`;
     tbody.appendChild(row);
   });
 }
 
-// Exportar CSV
+// --- Exportar CSV ---
+exportCSVBtn.addEventListener('click', exportCSV);
 function exportCSV() {
-  const table = document.getElementById('reportTable');
+  const table = reportTable;
   let csv = '';
   for (let row of table.rows) {
     const cells = Array.from(row.cells).map(cell => `"${cell.textContent}"`);
     csv += cells.join(',') + '\n';
   }
-  const blob = new Blob([csv], {type: 'text/csv'});
+  const blob = new Blob([csv], { type: 'text/csv' });
   const url = URL.createObjectURL(blob);
   const a = document.createElement('a');
   a.href = url;
@@ -212,15 +177,26 @@ function exportCSV() {
   URL.revokeObjectURL(url);
 }
 
-// Gerar todas as contagens
+// --- Gerar todas as contagens ---
+gerarContagensBtn.addEventListener('click', gerarTodasContagens);
 function gerarTodasContagens() {
   alert('✅ Todas as contagens geradas!');
   atualizarDados();
 }
 
-// Zerar todas as contagens
+// --- Zerar todas as contagens ---
+zerarContagensBtn.addEventListener('click', zerarTodasContagens);
 function zerarTodasContagens() {
-  const tbody = document.getElementById('reportTable').querySelector('tbody');
+  const tbody = reportTable.querySelector('tbody');
   tbody.querySelectorAll('td:nth-child(2)').forEach(td => td.textContent = 0);
   alert('⚠️ Todas as contagens zeradas!');
 }
+document.querySelectorAll('.cat-filter').forEach(chk => {
+  chk.addEventListener('change', () => {
+    const valor = chk.value.toLowerCase();
+    document.querySelectorAll('#reportTable tbody tr').forEach(row => {
+      const categoria = row.cells[0].textContent.toLowerCase();
+      row.style.display = chk.checked || categoria !== valor ? '' : 'none';
+    });
+  });
+});
