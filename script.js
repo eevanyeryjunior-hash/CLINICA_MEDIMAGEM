@@ -182,7 +182,6 @@ function verificarLogin() {
   if (user === 'admin' && pass === 'admin') {
     loginOverlay.style.display = 'none';
     reportOverlay.style.display = 'flex';
-    alert('✅ Login bem-sucedido! Exibindo relatórios...');
     atualizarMetricas();
   } else {
     alert('❌ Usuário ou senha incorretos!');
@@ -247,3 +246,4 @@ function zerarTodasContagens() {
     alert("⚠️ Todas as contagens foram zeradas!");
   }
 }
+
