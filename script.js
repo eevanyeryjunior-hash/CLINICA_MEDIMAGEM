@@ -65,7 +65,6 @@ scoreSlider.addEventListener('click', (e) => {
 
     smiley.classList.add('selected');
 
-    /* Mobile: rolar para baixo */
     if (window.innerWidth <= 768) {
       document.getElementById('formContainer').scrollIntoView({ behavior: 'smooth', block: 'end' });
     }
@@ -91,13 +90,13 @@ function validarEnvio() {
 function enviarFeedback() {
   document.getElementById('formContainer').style.display = 'none';
   thankYouScreen.style.display = 'flex';
-  thankYouScreen.classList.add('show'); // ativar animação
+  thankYouScreen.classList.add('show');
   setTimeout(voltarInicio, 5000);
 }
 
 /* Reiniciar formulário */
 function voltarInicio() {
-  thankYouScreen.classList.remove('show'); // remover animação
+  thankYouScreen.classList.remove('show');
   thankYouScreen.style.display = 'none';
   document.getElementById('formContainer').style.display = 'flex';
   document.getElementById('cpfOverlay').style.display = 'flex';
@@ -110,13 +109,26 @@ function voltarInicio() {
   document.querySelectorAll('.slider span').forEach(s => s.classList.remove('selected'));
   document.querySelectorAll('.thumbs button').forEach(b => b.classList.remove('selected'));
   document.querySelector('textarea').value = '';
-
   enviarBtn.disabled = true;
   notaSelecionada = false;
   opiniaoSelecionada = false;
 }
 
-/* Botão Relatório */
+/* BOTÃO RELATÓRIO */
 btnRelatorio.addEventListener('click', () => {
-  alert('🔍 Relatório de feedbacks ainda não implementado!');
+  document.getElementById('loginOverlay').style.display = 'flex';
 });
+
+/* VERIFICAR LOGIN */
+function verificarLogin() {
+  const user = document.getElementById('loginUser').value.trim();
+  const pass = document.getElementById('loginPass').value.trim();
+
+  if (user === 'admin' && pass === 'admin') {
+    document.getElementById('loginOverlay').style.display = 'none';
+    alert('✅ Login bem-sucedido! Exibindo relatórios...');
+    // Aqui você pode chamar a função para mostrar os relatórios
+  } else {
+    alert('❌ Usuário ou senha incorretos!');
+  }
+}
