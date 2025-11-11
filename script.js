@@ -8,6 +8,8 @@ const thankYouScreen = document.getElementById('thankYouScreen');
 const btnRelatorio = document.getElementById('btnRelatorio');
 const loginOverlay = document.getElementById('loginOverlay');
 const reportOverlay = document.getElementById('reportOverlay');
+const reportTableBody = document.querySelector('#reportTable tbody');
+const btnExportXLS = document.getElementById('btnExportXLS'); // Botão XLS
 
 // --- Contadores e armazenamento temporário ---
 let respostas = [];
@@ -79,18 +81,13 @@ scoreSlider.addEventListener('click', (e) => {
     else if (notaAtual === 10) { emoji = '🤩'; leftPanel.classList.add('green'); }
 
     smiley.textContent = emoji;
-
-    // 🔥 Reinicia a animação do rostinho
     smiley.classList.remove('animate');
-    void smiley.offsetWidth; // força reflow
+    void smiley.offsetWidth;
     smiley.classList.add('animate');
 
-    // 🪄 NOVO: rola suavemente até a área das opiniões
     const opiniaoSection = document.querySelector('.right-panel');
     if (opiniaoSection) {
       opiniaoSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
-
-      // ✨ Destaque suave na área de opinião
       opiniaoSection.classList.add('highlight');
       setTimeout(() => opiniaoSection.classList.remove('highlight'), 1500);
     }
@@ -100,38 +97,31 @@ scoreSlider.addEventListener('click', (e) => {
 // --- Thumbs feedback ---
 const categorias = ["Espera", "Estrutura", "Recepção", "Enfermagem", "Médicos"];
 let opinioes = {};
-
-// Inicializa todas as categorias como não respondidas
 categorias.forEach(cat => opinioes[cat] = null);
 
 document.querySelectorAll('.thumbs button').forEach(btn => {
   btn.addEventListener('click', () => {
     const row = btn.closest('.feedback-row');
     const categoria = row.querySelector('span').textContent.trim();
-
-    // Alterna o botão selecionado
     row.querySelectorAll('button').forEach(b => b.classList.remove('selected'));
     btn.classList.add('selected');
     opinioes[categoria] = btn.classList.contains('up') ? '👍' : '👎';
-
     validarEnvio();
   });
 });
 
 function validarEnvio() {
   const todasAvaliadas = categorias.every(cat => opinioes[cat] !== null);
-  if (notaSelecionada && todasAvaliadas) {
-    enviarBtn.disabled = false;
-  } else {
-    enviarBtn.disabled = true;
-  }
+  enviarBtn.disabled = !(notaSelecionada && todasAvaliadas);
 }
 
 // --- Envio feedback ---
 function enviarFeedback() {
   const comentario = document.querySelector('textarea').value.trim();
+  const cpf = cpfInput.value.trim();
 
   respostas.push({
+    cpf,
     nota: notaAtual,
     opinioes: { ...opinioes },
     comentario
@@ -143,7 +133,6 @@ function enviarFeedback() {
   if (notaAtual >= 9) totalPromotores++;
 
   atualizarMetricas();
-
   document.getElementById('formContainer').style.display = 'none';
   thankYouScreen.style.display = 'flex';
   thankYouScreen.classList.add('show');
@@ -156,7 +145,6 @@ function voltarInicio() {
   thankYouScreen.style.display = 'none';
   document.getElementById('formContainer').style.display = 'flex';
   document.getElementById('cpfOverlay').style.display = 'flex';
-
   cpfInput.value = '';
   smiley.textContent = '🙂';
   smiley.classList.remove('animate');
@@ -183,6 +171,7 @@ function verificarLogin() {
     loginOverlay.style.display = 'none';
     reportOverlay.style.display = 'flex';
     atualizarMetricas();
+    atualizarTabela();
   } else {
     alert('❌ Usuário ou senha incorretos!');
   }
@@ -196,38 +185,84 @@ function fecharRelatorio() {
 function atualizarMetricas() {
   const metrics = document.querySelectorAll('.metrics div strong');
   if (metrics.length < 4) return;
-
   const npsScore = totalRespostas > 0 ? (totalNPS / totalRespostas).toFixed(1) : 0;
   const percPromotores = totalRespostas > 0 ? ((totalPromotores / totalRespostas) * 100).toFixed(0) + "%" : "0%";
-
   metrics[0].textContent = totalRespostas;
   metrics[1].textContent = npsScore;
   metrics[2].textContent = totalComentarios;
   metrics[3].textContent = percPromotores;
 }
 
-// --- Exportar CSV completo ---
-function exportCSV() {
+// --- Atualizar tabela de respostas ---
+function atualizarTabela() {
+  if (!reportTableBody) return;
+  reportTableBody.innerHTML = '';
+  respostas.forEach(r => {
+    const tr = document.createElement('tr');
+    tr.innerHTML = `
+      <td>${r.cpf}</td>
+      <td>${r.nota}</td>
+      <td>${r.opinioes.Espera || ''}</td>
+      <td>${r.opinioes.Estrutura || ''}</td>
+      <td>${r.opinioes.Recepção || ''}</td>
+      <td>${r.opinioes.Enfermagem || ''}</td>
+      <td>${r.opinioes.Médicos || ''}</td>
+      <td>${r.comentario}</td>
+    `;
+    reportTableBody.appendChild(tr);
+  });
+}
+
+// --- Exportar para Excel (.xls) com substituição de emojis e remoção de acentos ---
+function removerAcentos(str) {
+  return str.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+}
+
+function exportXLS() {
   if (respostas.length === 0) {
     alert("Nenhum dado para exportar.");
     return;
   }
 
-  let csv = "Nota,Espera,Estrutura,Recepção,Enfermagem,Médicos,Comentário\n";
-  respostas.forEach(r => {
-    csv += `${r.nota},${r.opinioes.Espera},${r.opinioes.Estrutura},${r.opinioes.Recepção},${r.opinioes.Enfermagem},${r.opinioes.Médicos},"${r.comentario.replace(/"/g, '""')}"\n`;
+  const table = document.getElementById('reportTable');
+  if (!table) return;
+
+  const cloneTable = table.cloneNode(true);
+
+  cloneTable.querySelectorAll('tbody td').forEach(td => {
+    td.innerHTML = td.innerHTML
+      .replace(/👍/g, 'positivo')
+      .replace(/👎/g, 'negativo');
+    td.innerHTML = removerAcentos(td.innerHTML);
   });
 
-  const blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
-  const url = URL.createObjectURL(blob);
-  const a = document.createElement("a");
-  a.href = url;
-  a.download = "relatorio_pesquisa.csv";
-  a.click();
-  URL.revokeObjectURL(url);
+  const html = `
+    <html xmlns:x="urn:schemas-microsoft-com:office:excel">
+      <head>
+        <!--[if gte mso 9]><xml>
+        <x:ExcelWorkbook><x:ExcelWorksheets><x:ExcelWorksheet>
+        <x:Name>Relatorio</x:Name>
+        <x:WorksheetOptions><x:DisplayGridlines/></x:WorksheetOptions>
+        </x:ExcelWorksheet></x:ExcelWorksheets></x:ExcelWorkbook>
+        </xml><![endif]-->
+      </head>
+      <body>${cloneTable.outerHTML}</body>
+    </html>
+  `;
 
-  alert("✅ Relatório exportado com sucesso!");
+  const blob = new Blob([html], { type: 'application/vnd.ms-excel' });
+  const url = URL.createObjectURL(blob);
+
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = 'relatorio_pesquisa.xls';
+  a.click();
+
+  URL.revokeObjectURL(url);
+  alert("✅ Relatório exportado em .xls com sucesso!");
 }
+
+btnExportXLS.addEventListener('click', exportXLS);
 
 // --- Funções auxiliares ---
 function gerarTodasContagens() {
@@ -243,7 +278,7 @@ function zerarTodasContagens() {
     totalComentarios = 0;
     totalPromotores = 0;
     atualizarMetricas();
+    atualizarTabela();
     alert("⚠️ Todas as contagens foram zeradas!");
   }
 }
-
