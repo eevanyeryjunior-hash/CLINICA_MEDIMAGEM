@@ -129,17 +129,20 @@ function enviarFeedback() {
   const comentario = document.querySelector('textarea').value.trim();
   const cpf = cpfInput.value.trim();
 
+  // Detectar dispositivo
+  const isMobile = /Android|iPhone|iPad|iPod|Opera Mini|IEMobile|WPDesktop/i.test(navigator.userAgent);
+  const dispositivo = isMobile ? 'Celular/Tablet' : 'PC';
+
   const resposta = {
     cpf,
     nota: notaAtual,
     opinioes: { ...opinioes },
     comentario,
-    data: new Date().toLocaleString()
+    data: new Date().toLocaleString(),
+    dispositivo // adiciona dispositivo
   };
 
   respostas.push(resposta);
-
-  // Salva no localStorage
   localStorage.setItem('respostas', JSON.stringify(respostas));
 
   totalRespostas++;
@@ -148,9 +151,19 @@ function enviarFeedback() {
   if (notaAtual >= 9) totalPromotores++;
 
   atualizarMetricas();
+
   document.getElementById('formContainer').style.display = 'none';
   thankYouScreen.style.display = 'flex';
   thankYouScreen.classList.add('show');
+
+  // Mensagem de dispositivo
+  const msg = document.createElement('div');
+  msg.textContent = `📌 Feedback enviado pelo ${dispositivo}!`;
+  msg.style.marginTop = '20px';
+  msg.style.fontWeight = 'bold';
+  msg.style.color = '#007bff';
+  thankYouScreen.appendChild(msg);
+
   setTimeout(voltarInicio, 5000);
 }
 
@@ -171,6 +184,9 @@ function voltarInicio() {
   notaSelecionada = false;
   notaAtual = null;
   categorias.forEach(cat => opinioes[cat] = null);
+  // remove mensagem do dispositivo
+  const msg = thankYouScreen.querySelector('div');
+  if(msg) thankYouScreen.removeChild(msg);
 }
 
 // --- Login / Relatório ---
@@ -224,6 +240,7 @@ function atualizarTabela() {
       <td>${r.opinioes.Médicos || ''}</td>
       <td>${r.comentario}</td>
       <td>${r.data}</td>
+      <td>${r.dispositivo}</td> <!-- nova coluna -->
     `;
     reportTableBody.appendChild(tr);
   });
