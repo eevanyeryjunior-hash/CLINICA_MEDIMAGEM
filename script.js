@@ -12,11 +12,20 @@ const reportTableBody = document.querySelector('#reportTable tbody');
 const btnExportXLS = document.getElementById('btnExportXLS'); // Botão XLS
 
 // --- Contadores e armazenamento temporário ---
-let respostas = [];
+let respostas = JSON.parse(localStorage.getItem('respostas')) || [];
 let totalRespostas = 0;
 let totalNPS = 0;
 let totalComentarios = 0;
 let totalPromotores = 0;
+
+// --- Inicializa contadores a partir do localStorage ---
+function inicializarContadores() {
+  totalRespostas = respostas.length;
+  totalNPS = respostas.reduce((acc, r) => acc + r.nota, 0);
+  totalComentarios = respostas.filter(r => r.comentario && r.comentario.trim() !== '').length;
+  totalPromotores = respostas.filter(r => r.nota >= 9).length;
+}
+inicializarContadores();
 
 // --- Máscara CPF ---
 cpfInput.addEventListener('input', () => {
@@ -120,12 +129,18 @@ function enviarFeedback() {
   const comentario = document.querySelector('textarea').value.trim();
   const cpf = cpfInput.value.trim();
 
-  respostas.push({
+  const resposta = {
     cpf,
     nota: notaAtual,
     opinioes: { ...opinioes },
-    comentario
-  });
+    comentario,
+    data: new Date().toLocaleString()
+  };
+
+  respostas.push(resposta);
+
+  // Salva no localStorage
+  localStorage.setItem('respostas', JSON.stringify(respostas));
 
   totalRespostas++;
   totalNPS += notaAtual;
@@ -208,12 +223,13 @@ function atualizarTabela() {
       <td>${r.opinioes.Enfermagem || ''}</td>
       <td>${r.opinioes.Médicos || ''}</td>
       <td>${r.comentario}</td>
+      <td>${r.data}</td>
     `;
     reportTableBody.appendChild(tr);
   });
 }
 
-// --- Exportar para Excel (.xls) com substituição de emojis e remoção de acentos ---
+// --- Exportar para Excel (.xls) ---
 function removerAcentos(str) {
   return str.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
 }
@@ -277,6 +293,7 @@ function zerarTodasContagens() {
     totalNPS = 0;
     totalComentarios = 0;
     totalPromotores = 0;
+    localStorage.removeItem('respostas');
     atualizarMetricas();
     atualizarTabela();
     alert("⚠️ Todas as contagens foram zeradas!");
