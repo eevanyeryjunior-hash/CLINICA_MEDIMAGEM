@@ -82,15 +82,12 @@ scoreSlider.addEventListener('click', (e) => {
 
     // 🔥 Reinicia a animação do rostinho
     smiley.classList.remove('animate');
-    void smiley.offsetWidth; // força reflow
+    void smiley.offsetWidth;
     smiley.classList.add('animate');
 
-    // 🪄 NOVO: rola suavemente até a área das opiniões
     const opiniaoSection = document.querySelector('.right-panel');
     if (opiniaoSection) {
       opiniaoSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
-
-      // ✨ Destaque suave na área de opinião
       opiniaoSection.classList.add('highlight');
       setTimeout(() => opiniaoSection.classList.remove('highlight'), 1500);
     }
@@ -100,31 +97,22 @@ scoreSlider.addEventListener('click', (e) => {
 // --- Thumbs feedback ---
 const categorias = ["Espera", "Estrutura", "Recepção", "Enfermagem", "Médicos"];
 let opinioes = {};
-
-// Inicializa todas as categorias como não respondidas
 categorias.forEach(cat => opinioes[cat] = null);
 
 document.querySelectorAll('.thumbs button').forEach(btn => {
   btn.addEventListener('click', () => {
     const row = btn.closest('.feedback-row');
     const categoria = row.querySelector('span').textContent.trim();
-
-    // Alterna o botão selecionado
     row.querySelectorAll('button').forEach(b => b.classList.remove('selected'));
     btn.classList.add('selected');
     opinioes[categoria] = btn.classList.contains('up') ? '👍' : '👎';
-
     validarEnvio();
   });
 });
 
 function validarEnvio() {
   const todasAvaliadas = categorias.every(cat => opinioes[cat] !== null);
-  if (notaSelecionada && todasAvaliadas) {
-    enviarBtn.disabled = false;
-  } else {
-    enviarBtn.disabled = true;
-  }
+  enviarBtn.disabled = !(notaSelecionada && todasAvaliadas);
 }
 
 // --- Envio feedback ---
@@ -183,6 +171,7 @@ function verificarLogin() {
     loginOverlay.style.display = 'none';
     reportOverlay.style.display = 'flex';
     atualizarMetricas();
+    atualizarTabelaRelatorio(); // ✅ Mostra respostas detalhadas
   } else {
     alert('❌ Usuário ou senha incorretos!');
   }
@@ -206,6 +195,39 @@ function atualizarMetricas() {
   metrics[3].textContent = percPromotores;
 }
 
+// --- ✅ NOVO: Atualizar tabela com respostas detalhadas ---
+function atualizarTabelaRelatorio() {
+  const tbody = document.querySelector('#reportTable tbody');
+  if (!tbody) return;
+
+  tbody.innerHTML = '';
+
+  if (respostas.length === 0) {
+    const tr = document.createElement('tr');
+    const td = document.createElement('td');
+    td.colSpan = 7;
+    td.textContent = 'Nenhuma resposta registrada ainda.';
+    tr.appendChild(td);
+    tbody.appendChild(tr);
+    return;
+  }
+
+  respostas.forEach((r, i) => {
+    const tr = document.createElement('tr');
+    tr.innerHTML = `
+      <td>${i + 1}</td>
+      <td>${r.nota}</td>
+      <td>${r.opinioes.Espera}</td>
+      <td>${r.opinioes.Estrutura}</td>
+      <td>${r.opinioes.Recepção}</td>
+      <td>${r.opinioes.Enfermagem}</td>
+      <td>${r.opinioes.Médicos}</td>
+      <td>${r.comentario || '-'}</td>
+    `;
+    tbody.appendChild(tr);
+  });
+}
+
 // --- Exportar CSV completo ---
 function exportCSV() {
   if (respostas.length === 0) {
@@ -225,7 +247,6 @@ function exportCSV() {
   a.download = "relatorio_pesquisa.csv";
   a.click();
   URL.revokeObjectURL(url);
-
   alert("✅ Relatório exportado com sucesso!");
 }
 
@@ -243,6 +264,7 @@ function zerarTodasContagens() {
     totalComentarios = 0;
     totalPromotores = 0;
     atualizarMetricas();
+    atualizarTabelaRelatorio(); // ✅ limpa a tabela também
     alert("⚠️ Todas as contagens foram zeradas!");
   }
 }
