@@ -15,7 +15,7 @@
         <img src="logo.jpg" alt="Clinica Medimagem">
       </div>
 
-      <h3> class="titulo-vermelho">Pesquisa de Satisfação</h3>
+      <h3 class="titulo-vermelho">Pesquisa de Satisfação</h3>
       <p>Preencha as informações abaixo para iniciar a pesquisa:</p>
       <input type="tel" id="cpf" maxlength="14" inputmode="numeric" placeholder="000.000.000-00">
       <button onclick="iniciarPesquisa()">INICIAR</button>
@@ -72,83 +72,83 @@
 
   <!-- Relatório -->
   <div class="report-overlay" id="reportOverlay" style="display:none;">
-  <div class="report-modal">
-    <h3>📊 Relatórios - Clinica Medimagem</h3>
+    <div class="report-modal">
+      <h3>📊 Relatórios - Clinica Medimagem</h3>
 
-    <div class="report-header">
-      <div class="filter-group">
-        <label class="filter-title"><i class="fas fa-calendar-alt"></i> Período de Análise</label>
-        <select id="periodSelect" class="styled-select">
-          <option>Todos os dados</option>
-          <option>Últimos 7 dias</option>
-          <option>Últimos 30 dias</option>
-          <option>Últimos 90 dias</option>
-        </select>
-      </div>
+      <div class="report-header">
+        <div class="filter-group">
+          <label class="filter-title"><i class="fas fa-calendar-alt"></i> Período de Análise</label>
+          <select id="periodSelect" class="styled-select">
+            <option>Todos os dados</option>
+            <option>Últimos 7 dias</option>
+            <option>Últimos 30 dias</option>
+            <option>Últimos 90 dias</option>
+          </select>
+        </div>
 
-      <div class="categories-group">
-        <label class="filter-title"><i class="fas fa-filter"></i> Categorias Visíveis</label>
-        <div class="checkbox-list compact">
-          <label><input type="checkbox" checked> Espera</label>
-          <label><input type="checkbox" checked> Estrutura</label>
-          <label><input type="checkbox" checked> Recepção</label>
-          <label><input type="checkbox" checked> Enfermagem</label>
-          <label><input type="checkbox" checked> Médicos</label>
+        <div class="categories-group">
+          <label class="filter-title"><i class="fas fa-filter"></i> Categorias Visíveis</label>
+          <div class="checkbox-list compact">
+            <label><input type="checkbox" checked> Espera</label>
+            <label><input type="checkbox" checked> Estrutura</label>
+            <label><input type="checkbox" checked> Recepção</label>
+            <label><input type="checkbox" checked> Enfermagem</label>
+            <label><input type="checkbox" checked> Médicos</label>
+          </div>
+        </div>
+
+        <div class="actions-group">
+          <label class="filter-title"><i class="fas fa-download"></i> Ações</label>
+          <button class="btn orange" id="btnExportXLS">⬇ Exportar Excel (.xls)</button>
+          <button class="btn gray" onclick="atualizarDados()">⟳ Atualizar Dados</button>
+          <button class="btn green" onclick="gerarTodasContagens()">📈 Gerar Todas as Contagens</button>
+          <button class="btn red" onclick="zerarTodasContagens()">🗑️ Zerar Todas as Contagens</button>
+          <label class="auto-refresh"><input type="checkbox"> Auto-atualizar (5seg)</label>
         </div>
       </div>
 
-      <div class="actions-group">
-        <label class="filter-title"><i class="fas fa-download"></i> Ações</label>
-        <button class="btn orange" id="btnExportXLS">⬇ Exportar Excel (.xls)</button>
-        <button class="btn gray" onclick="atualizarDados()">⟳ Atualizar Dados</button>
-        <button class="btn green" onclick="gerarTodasContagens()">📈 Gerar Todas as Contagens</button>
-        <button class="btn red" onclick="zerarTodasContagens()">🗑️ Zerar Todas as Contagens</button>
-        <label class="auto-refresh"><input type="checkbox"> Auto-atualizar (5seg)</label>
+      <hr>
+
+      <div class="metrics">
+        <div>
+          <strong id="totalRespostas">10</strong>
+          <span>Respostas</span>
+        </div>
+        <div>
+          <strong id="npsScore" style="color:#27ae60;">60</strong>
+          <span>NPS Score</span>
+        </div>
+        <div>
+          <strong id="totalComentarios">0</strong>
+          <span>Comentários</span>
+        </div>
+        <div>
+          <strong id="promotores" style="color:#9b59b6;">80%</strong>
+          <span>Promotores</span>
+        </div>
       </div>
+
+      <!-- Tabela de respostas detalhadas -->
+      <h4 style="margin-top: 20px; text-align:center;">Respostas Detalhadas</h4>
+      <table id="reportTable">
+        <thead>
+          <tr>
+            <th>CPF</th>
+            <th>Nota</th>
+            <th>Espera</th>
+            <th>Estrutura</th>
+            <th>Recepção</th>
+            <th>Enfermagem</th>
+            <th>Médicos</th>
+            <th>Comentário</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+
+      <button class="closeReport" onclick="fecharRelatorio()">Fechar</button>
     </div>
-
-    <hr>
-
-    <div class="metrics">
-      <div>
-        <strong id="totalRespostas">10</strong>
-        <span>Respostas</span>
-      </div>
-      <div>
-        <strong id="npsScore" style="color:#27ae60;">60</strong>
-        <span>NPS Score</span>
-      </div>
-      <div>
-        <strong id="totalComentarios">0</strong>
-        <span>Comentários</span>
-      </div>
-      <div>
-        <strong id="promotores" style="color:#9b59b6;">80%</strong>
-        <span>Promotores</span>
-      </div>
-    </div>
-
-    <!-- Tabela de respostas detalhadas -->
-    <h4 style="margin-top: 20px; text-align:center;">Respostas Detalhadas</h4>
-    <table id="reportTable">
-      <thead>
-        <tr>
-          <th>CPF</th>
-          <th>Nota</th>
-          <th>Espera</th>
-          <th>Estrutura</th>
-          <th>Recepção</th>
-          <th>Enfermagem</th>
-          <th>Médicos</th>
-          <th>Comentário</th>
-        </tr>
-      </thead>
-      <tbody></tbody>
-    </table>
-
-    <button class="closeReport" onclick="fecharRelatorio()">Fechar</button>
   </div>
-</div>
 
   <script src="script.js"></script>
   <script>
@@ -163,7 +163,3 @@
   </script>
 </body>
 </html>
-
-
-
-
