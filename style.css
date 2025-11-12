@@ -22,9 +22,9 @@ body { font-family: 'Inter', sans-serif; background: #f4f8fb; color: #333; line-
 /* ================= CONTAINER PRINCIPAL ================= */
 .container {
   display: flex;
-  width: 95vw;                /* ocupa 95% da largura da tela */
-  height: 95vh;               /* ocupa 95% da altura da tela */
-  margin: auto;               /* centraliza vertical e horizontalmente */
+  width: 95vw;
+  height: 95vh;
+  margin: auto;
   background: #fff;
   border-radius: 18px;
   overflow: hidden;
@@ -178,7 +178,7 @@ button.enviar {
 button.enviar:disabled { background: #ccc; cursor: not-allowed; }
 button.enviar:hover:not(:disabled) { background: #c9302c; }
 
-/* ================= MODAIS ================= */
+/* ================= MODAIS EXISTENTES ================= */
 .overlay {
   position: fixed;
   top: 0; left: 0;
@@ -221,6 +221,57 @@ button.enviar:hover:not(:disabled) { background: #c9302c; }
   transition: 0.3s;
 }
 .modal button:hover { background: #c9302c; }
+
+/* ================= MODAL RESPONSIVO CENTRALIZADO ================= */
+.modal-responsive-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.55);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+  overflow-y: auto;
+  z-index: 1050;
+}
+.modal-responsive {
+  background: #fff;
+  border-radius: 12px;
+  padding: 40px 30px;
+  width: 100%;
+  max-width: 600px;
+  max-height: 90vh;
+  overflow-y: auto;
+  box-shadow: 0 5px 25px rgba(0,0,0,0.25);
+  text-align: center;
+  animation: modalFadeIn 0.3s ease;
+  margin: auto;
+}
+@keyframes modalFadeIn {
+  from { opacity: 0; transform: translateY(-20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.modal-responsive input {
+  width: 100%;
+  padding: 16px;
+  margin-top: 15px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  text-align: center;
+  font-size: 16px;
+}
+.modal-responsive button {
+  margin-top: 20px;
+  background: #d9534f;
+  color: white;
+  border: none;
+  border-radius: 20px;
+  font-size: 16px;
+  padding: 10px 25px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+.modal-responsive button:hover { background: #c9302c; }
 
 /* ================= TELA DE AGRADECIMENTO ================= */
 .thank-you {
@@ -271,11 +322,21 @@ button.enviar:hover:not(:disabled) { background: #c9302c; }
     min-height: 300px;
   }
 }
-
-/* Ajuste fino para telas pequenas */
 @media (max-width: 768px) {
   textarea, button.enviar { font-size: 13px; }
   .slider span { width: 38px; height: 38px; font-size: 13px; }
+  .modal-responsive {
+    padding: 30px 20px;
+    max-width: 90%;
+  }
+  .modal-responsive input {
+    font-size: 14px;
+    padding: 14px;
+  }
+  .modal-responsive button {
+    font-size: 14px;
+    padding: 10px 20px;
+  }
 }
 
 /* ================= RELATÓRIO ================= */
@@ -402,4 +463,3 @@ button.enviar:hover:not(:disabled) { background: #c9302c; }
   color: red;
   font-weight: bold;
 }
-
