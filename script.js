@@ -2,7 +2,7 @@
 const cpfInput = document.getElementById('cpf');
 const leftPanel = document.getElementById('leftPanel');
 const smiley = document.getElementById('smiley');
-const scoreSlider = document.getElementById('scoreSlider');
+const scoreSlider = document.getElementById('scoreSlider'); // Slider de notas
 const enviarBtn = document.getElementById('btnEnviar');
 const thankYouScreen = document.getElementById('thankYouScreen');
 const btnRelatorio = document.getElementById('btnRelatorio');
@@ -60,6 +60,17 @@ function iniciarPesquisa() {
     return;
   }
   document.getElementById('cpfOverlay').style.display = 'none';
+}
+
+// --- Geração das notas de 0 a 10 no slider ---
+if (scoreSlider) {
+  scoreSlider.innerHTML = ''; // limpa antes de criar
+  for (let i = 0; i <= 10; i++) {
+    const span = document.createElement('span');
+    span.textContent = i; // mostra o número dentro da bolinha
+    span.dataset.value = i;
+    scoreSlider.appendChild(span);
+  }
 }
 
 // --- Controle feedback ---
@@ -139,7 +150,7 @@ function enviarFeedback() {
     opinioes: { ...opinioes },
     comentario,
     data: new Date().toLocaleString(),
-    dispositivo // adiciona dispositivo
+    dispositivo
   };
 
   respostas.push(resposta);
@@ -184,6 +195,7 @@ function voltarInicio() {
   notaSelecionada = false;
   notaAtual = null;
   categorias.forEach(cat => opinioes[cat] = null);
+
   // remove mensagem do dispositivo
   const msg = thankYouScreen.querySelector('div');
   if(msg) thankYouScreen.removeChild(msg);
@@ -240,7 +252,7 @@ function atualizarTabela() {
       <td>${r.opinioes.Médicos || ''}</td>
       <td>${r.comentario}</td>
       <td>${r.data}</td>
-      <td>${r.dispositivo}</td> <!-- nova coluna -->
+      <td>${r.dispositivo}</td>
     `;
     reportTableBody.appendChild(tr);
   });
