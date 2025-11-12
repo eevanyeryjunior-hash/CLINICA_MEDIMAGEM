@@ -22,28 +22,25 @@ body { font-family: 'Inter', sans-serif; background: #f4f8fb; color: #333; line-
 /* ================= CONTAINER PRINCIPAL ================= */
 .container {
   display: flex;
-  width: 95vw;                
-  height: 95vh;               
-  margin: auto;               
+  max-width: 900px;
+  margin: 20px auto;
   background: #fff;
-  border-radius: 18px;
+  border-radius: 12px;
   overflow: hidden;
-  flex-wrap: nowrap;
-  box-shadow: 0 5px 25px rgba(0,0,0,0.15);
-  transition: all 0.3s ease;
+  flex-wrap: wrap;
+  box-shadow: 0 0 20px rgba(0,0,0,0.05);
 }
 
 /* ================= PAINEL ESQUERDO (NOTA) ================= */
 .left-panel {
-  flex: 1 1 40%;
+  flex: 1 1 300px;
   background: linear-gradient(180deg, #d9534f, #c9302c);
   color: #fff;
   text-align: center;
-  padding: 40px 20px;
+  padding: 30px 20px;
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
   transition: background 0.6s ease, transform 0.3s ease;
 }
 .left-panel.red { background: linear-gradient(180deg, #d9534f, #c9302c); }
@@ -57,7 +54,7 @@ body { font-family: 'Inter', sans-serif; background: #f4f8fb; color: #333; line-
 }
 .smiley.selected { transform: scale(1.15); filter: brightness(1.2); }
 
-/* ================= SLIDER DE NOTAS (AJUSTE RESTAURADO) ================= */
+/* ================= SLIDER DE NOTAS ================= */
 .slider-wrapper {
   width: 100%;
   display: flex;
@@ -67,20 +64,20 @@ body { font-family: 'Inter', sans-serif; background: #f4f8fb; color: #333; line-
 }
 .slider {
   display: grid;
-  grid-template-columns: repeat(11, 1fr);
-  gap: 8px;
+  grid-template-columns: repeat(auto-fill, minmax(45px, 1fr));
+  gap: 12px;
   justify-content: center;
   align-items: center;
-  max-width: 90%;
+  max-width: 100%;
 }
 .slider span {
-  width: 38px;
-  height: 38px;
+  width: 55px;
+  height: 55px;
   border-radius: 50%;
   background: rgba(255,255,255,0.3);
   color: white;
   font-weight: 500;
-  font-size: 14px;
+  font-size: 18px;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -100,9 +97,9 @@ body { font-family: 'Inter', sans-serif; background: #f4f8fb; color: #333; line-
 
 /* ================= PAINEL DIREITO (FEEDBACK) ================= */
 .right-panel {
-  flex: 1 1 60%;
+  flex: 1 1 300px;
   background: white;
-  padding: 40px 30px;
+  padding: 30px 20px;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -149,12 +146,12 @@ body { font-family: 'Inter', sans-serif; background: #f4f8fb; color: #333; line-
 /* ================= TEXTAREA E BOTÃO ENVIAR ================= */
 textarea {
   width: 100%;
-  height: 90px;
-  margin-top: 15px;
+  height: 80px;
+  margin-top: 10px;
   border-radius: 6px;
   border: 1px solid #ccc;
-  padding: 12px;
-  font-size: 15px;
+  padding: 10px;
+  font-size: 14px;
   resize: none;
   transition: border-color 0.3s, box-shadow 0.3s;
 }
@@ -191,23 +188,23 @@ button.enviar:hover:not(:disabled) { background: #c9302c; }
 }
 .modal {
   background: white;
-  border-radius: 12px;
-  padding: 60px 40px;
-  width: 95%;
-  max-width: 650px;
-  max-height: 94vh;
+  border-radius: 10px;
+  padding: 40px 20px;
+  width: 90%;
+  max-width: 400px;
+  max-height: 90vh;
   overflow-y: auto;
   text-align: center;
   box-shadow: 0 5px 25px rgba(0,0,0,0.2);
 }
 .modal input {
   width: 100%;
-  padding: 18px;
-  border-radius: 10px;
+  padding: 12px;
+  border-radius: 6px;
   border: 1px solid #ccc;
   text-align: center;
-  font-size: 20px;
-  margin-top: 20px;
+  font-size: 16px;
+  margin-top: 10px;
 }
 .modal button {
   margin-top: 20px;
@@ -241,21 +238,6 @@ button.enviar:hover:not(:disabled) { background: #c9302c; }
   transition: opacity 0.5s ease, transform 0.5s ease;
 }
 .thank-you.show { opacity: 1; transform: scale(1); }
-
-/* ✅ ÍCONE DE CONFIRMAÇÃO VERDE */
-.thank-you .checkmark {
-  font-size: 55px;
-  color: #27ae60;
-  margin-bottom: 10px;
-  animation: bounceCheck 0.6s ease;
-}
-@keyframes bounceCheck {
-  0% { transform: scale(0); opacity: 0; }
-  50% { transform: scale(1.3); opacity: 1; }
-  70% { transform: scale(0.9); }
-  100% { transform: scale(1); }
-}
-
 .thank-you h2 { color: #27ae60; font-size: 2em; margin-bottom: 15px; }
 .thank-you p { color: #555; font-size: 1.1em; margin: 8px 0; }
 #btnRelatorio { width: 80%; margin-top: 15px; background: #d9534f; }
@@ -275,23 +257,12 @@ button.enviar:hover:not(:disabled) { background: #c9302c; }
 
 /* ================= RESPONSIVO ================= */
 @media (max-width: 900px) {
-  .container {
-    flex-direction: column;
-    width: 95%;
-    height: auto;
-    margin: 10px auto;
-  }
-  .left-panel, .right-panel {
-    flex: 1 1 100%;
-    min-height: 300px;
-  }
+  .container { flex-direction: column; }
 }
 @media (max-width: 768px) {
   textarea, button.enviar { font-size: 13px; }
-  .slider span { width: 34px; height: 34px; font-size: 12px; }
 }
-
-/* ================= RELATÓRIO ================= */
+/* Overlay do relatório - fundo escurecido que cobre toda a tela */
 .report-overlay {
   background: rgba(0, 0, 0, 0.5);
   position: fixed;
@@ -301,6 +272,8 @@ button.enviar:hover:not(:disabled) { background: #c9302c; }
   align-items: center;
   z-index: 1000;
 }
+
+/* Container principal/modal do relatório */
 .report-modal {
   background: #f9fbfd;
   border-radius: 12px;
@@ -315,6 +288,8 @@ button.enviar:hover:not(:disabled) { background: #c9302c; }
   display: flex;
   flex-direction: column;
 }
+
+/* Título do relatório dentro do modal */
 .report-modal h3 {
   font-weight: 700;
   margin-bottom: 25px;
@@ -324,6 +299,8 @@ button.enviar:hover:not(:disabled) { background: #c9302c; }
   font-size: 20px;
   color: #222;
 }
+
+/* Cabeçalho do relatório (filtros, categorias, ações) */
 .report-header {
   display: flex;
   justify-content: space-between;
@@ -331,11 +308,17 @@ button.enviar:hover:not(:disabled) { background: #c9302c; }
   flex-wrap: wrap;
   margin-bottom: 30px;
 }
-.filter-group, .categories-group, .actions-group {
+
+/* Grupos de filtros, categorias e ações dentro do header */
+.filter-group,
+.categories-group,
+.actions-group {
   display: flex;
   flex-direction: column;
   gap: 12px;
 }
+
+/* Título dos filtros */
 .filter-title {
   font-weight: 600;
   color: #444;
@@ -344,11 +327,15 @@ button.enviar:hover:not(:disabled) { background: #c9302c; }
   gap: 6px;
   font-size: 14px;
 }
+
+/* Separador horizontal */
 .report-modal hr {
   border: none;
   border-top: 1px solid #ddd;
   margin: 15px 0 25px 0;
 }
+
+/* Métricas principais do relatório (valores em destaque com legenda) */
 .metrics {
   display: flex;
   justify-content: space-around;
@@ -356,12 +343,14 @@ button.enviar:hover:not(:disabled) { background: #c9302c; }
   border-radius: 14px;
   padding: 25px 15px;
   box-shadow: 0 3px 12px rgba(0,0,0,0.07);
+  font-family: 'Inter', sans-serif;
   color: #555;
   text-align: center;
   margin-bottom: 20px;
   flex-wrap: wrap;
   gap: 20px;
 }
+
 .metrics > div {
   flex: 1 1 120px;
   min-width: 100px;
@@ -369,35 +358,51 @@ button.enviar:hover:not(:disabled) { background: #c9302c; }
   flex-direction: column;
   gap: 6px;
 }
+
 .metrics strong {
   font-size: 28px;
   font-weight: 700;
   color: #222;
 }
+
 .metrics span {
   font-size: 14px;
   text-transform: capitalize;
   font-weight: 600;
   color: #555;
 }
-.metrics > div:nth-child(2) strong { color: #27ae60; }
-.metrics > div:nth-child(4) strong { color: #9b59b6; }
+
+/* Cores específicas para algumas métricas */
+.metrics > div:nth-child(2) strong {
+  color: #27ae60;
+}
+.metrics > div:nth-child(4) strong {
+  color: #9b59b6;
+}
+
+/* Tabela do relatório */
 #reportTable {
   width: 100%;
   border-collapse: collapse;
   margin-top: 15px;
 }
-#reportTable th, #reportTable td {
+
+#reportTable th,
+#reportTable td {
   border: 1px solid #ddd;
   padding: 8px;
   font-size: 14px;
   text-align: center;
   vertical-align: middle;
 }
+
 #reportTable th {
   background-color: #f0f3f7;
   font-weight: 600;
+  user-select: none;
 }
+
+/* Botão para fechar o relatório */
 .closeReport {
   align-self: flex-end;
   margin-top: 25px;
@@ -409,40 +414,11 @@ button.enviar:hover:not(:disabled) { background: #c9302c; }
   font-weight: 600;
   cursor: pointer;
   transition: background-color 0.25s ease;
-}
-.closeReport:hover { background-color: #b52b27; }
-
-/* ================= ABA DO CPF ================= */
-.cpf-tab {
-  font-weight: bold;
-  color: red;
-  font-size: 18px;
-  text-align: center;
-  margin-bottom: 15px;     
+  user-select: none;
 }
 
-/* ================= BOTÃO INICIAR ================= */
-button.iniciar {
-  background-color: #d9534f;
-  color: white;
-  border: none;
-  border-radius: 25px;
-  font-size: 20px;
-  padding: 15px 40px;
-  cursor: pointer;
-  transition: 0.3s;
-  font-weight: bold;
-}
-button.iniciar:hover {
-  background-color: #c9302c;
-  transform: scale(1.05);
-}
-
-/* ================= TÍTULO PESQUISA DE SATISFAÇÃO ================= */
-.title-red {
-  color: #d9534f;
-  font-weight: 700;
-  text-align: center;
-  margin-bottom: 20px;
-  font-size: 24px;
+.closeReport:hover,
+.closeReport:focus {
+  background-color: #b52b27;
+  outline: none;
 }
