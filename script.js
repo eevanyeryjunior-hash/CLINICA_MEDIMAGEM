@@ -65,8 +65,8 @@ scoreSlider.addEventListener('click', (e) => {
     notaSelecionada = true;
     validarEnvio();
 
-     leftPanel.className = 'left-panel';
-    
+    leftPanel.className = 'left-panel';
+
     let emoji = '🙂';
     if (notaAtual <= 1) { emoji = '😡'; leftPanel.classList.add('red'); }
     else if (notaAtual === 2) { emoji = '😠'; leftPanel.classList.add('red'); }
@@ -189,7 +189,7 @@ function atualizarMetricas() {
   metrics[3].textContent = percPromotores;
 }
 
-// --- ✅ Atualizar tabela com respostas detalhadas (com CPF) ---
+// --- Atualizar tabela com respostas detalhadas (com CPF) ---
 function atualizarTabelaRelatorio() {
   const tbody = document.querySelector('#reportTable tbody');
   if (!tbody) return;
@@ -209,7 +209,7 @@ function atualizarTabelaRelatorio() {
   respostas.forEach((r, i) => {
     const tr = document.createElement('tr');
     tr.innerHTML = `
-      <td>${r.cpf}</td> <!-- ✅ Mostra o CPF -->
+      <td>${r.cpf}</td>
       <td>${r.nota}</td>
       <td>${r.opinioes.Espera}</td>
       <td>${r.opinioes.Estrutura}</td>
@@ -222,27 +222,53 @@ function atualizarTabelaRelatorio() {
   });
 }
 
-// --- Exportar CSV completo (com CPF) ---
-function exportCSV() {
+// --- Exportar Excel (.xls) completo (com CPF) ---
+function exportExcel() {
   if (respostas.length === 0) {
     alert("Nenhum dado para exportar.");
     return;
   }
 
-  let csv = "CPF,Nota,Espera,Estrutura,Recepção,Enfermagem,Médicos,Comentário\n";
+  let html = `<table border="1"><thead><tr>
+    <th>CPF</th>
+    <th>Nota</th>
+    <th>Espera</th>
+    <th>Estrutura</th>
+    <th>Recepção</th>
+    <th>Enfermagem</th>
+    <th>Médicos</th>
+    <th>Comentário</th>
+  </tr></thead><tbody>`;
+
   respostas.forEach(r => {
-    csv += `${r.cpf},${r.nota},${r.opinioes.Espera},${r.opinioes.Estrutura},${r.opinioes.Recepção},${r.opinioes.Enfermagem},${r.opinioes.Médicos},"${r.comentario.replace(/"/g, '""')}"\n`;
+    html += `<tr>
+      <td>${r.cpf}</td>
+      <td>${r.nota}</td>
+      <td>${r.opinioes.Espera}</td>
+      <td>${r.opinioes.Estrutura}</td>
+      <td>${r.opinioes.Recepção}</td>
+      <td>${r.opinioes.Enfermagem}</td>
+      <td>${r.opinioes.Médicos}</td>
+      <td>${r.comentario || '-'}</td>
+    </tr>`;
   });
 
-  const blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
+  html += `</tbody></table>`;
+
+  const blob = new Blob([html], { type: "application/vnd.ms-excel" });
   const url = URL.createObjectURL(blob);
   const a = document.createElement("a");
   a.href = url;
-  a.download = "relatorio_pesquisa.csv";
+  a.download = "relatorio_pesquisa.xls";
+  document.body.appendChild(a);
   a.click();
+  document.body.removeChild(a);
   URL.revokeObjectURL(url);
-  alert("✅ Relatório exportado com sucesso!");
+  alert("✅ Relatório exportado para Excel (.xls) com sucesso!");
 }
+
+// --- Associar função ao botão de exportação ---
+document.getElementById('btnExportExcel').addEventListener('click', exportExcel);
 
 // --- Funções auxiliares ---
 function gerarTodasContagens() {
@@ -262,4 +288,3 @@ function zerarTodasContagens() {
     alert("⚠️ Todas as contagens foram zeradas!");
   }
 }
-
