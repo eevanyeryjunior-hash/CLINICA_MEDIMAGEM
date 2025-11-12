@@ -1,6 +1,15 @@
 /* ================= RESET & BASE ================= */
 * { box-sizing: border-box; margin: 0; padding: 0; }
-body { font-family: 'Inter', sans-serif; background: #f4f8fb; color: #333; line-height: 1.4; }
+body { 
+  font-family: 'Inter', sans-serif; 
+  background: #f4f8fb; 
+  color: #333; 
+  line-height: 1.4; 
+  display: flex;               /* ADICIONADO */
+  justify-content: center;     /* ADICIONADO */
+  align-items: center;         /* ADICIONADO */
+  height: 100vh;               /* ADICIONADO */
+}
 
 /* ================= LOGO ================= */
 .logo-header {
@@ -24,7 +33,6 @@ body { font-family: 'Inter', sans-serif; background: #f4f8fb; color: #333; line-
   display: flex;
   width: 95vw;                
   height: 95vh;               
-  margin: auto;               
   background: #fff;
   border-radius: 18px;
   overflow: hidden;
@@ -431,3 +439,4 @@ button.iniciar:hover {
   margin-bottom: 20px;
   font-size: 24px;
 }
+
