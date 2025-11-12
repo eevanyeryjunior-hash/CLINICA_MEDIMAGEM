@@ -188,14 +188,15 @@ button.enviar:hover:not(:disabled) { background: #c9302c; }
 }
 .modal {
   background: white;
-  border-radius: 10px;
-  padding: 40px 20px;
-  width: 90%;
-  max-width: 400px;
-  max-height: 90vh;
+  border-radius: 14px;
+  padding: 60px 40px;       /* mais espaçamento interno */
+  width: 95%;
+  max-width: 650px;         /* antes: 550px */
+  max-height: 94vh;         /* levemente maior */
   overflow-y: auto;
   text-align: center;
-  box-shadow: 0 5px 25px rgba(0,0,0,0.2);
+  box-shadow: 0 10px 35px rgba(0,0,0,0.25);
+  transition: transform 0.3s ease;
 }
 .modal input {
   width: 100%;
@@ -422,3 +423,4 @@ button.enviar:hover:not(:disabled) { background: #c9302c; }
   background-color: #b52b27;
   outline: none;
 }
+
