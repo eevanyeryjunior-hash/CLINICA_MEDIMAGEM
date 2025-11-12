@@ -22,9 +22,9 @@ body { font-family: 'Inter', sans-serif; background: #f4f8fb; color: #333; line-
 /* ================= CONTAINER PRINCIPAL ================= */
 .container {
   display: flex;
-  width: 95vw;                /* ocupa 95% da largura da tela */
-  height: 95vh;               /* ocupa 95% da altura da tela */
-  margin: auto;               /* centraliza vertical e horizontalmente */
+  width: 95vw;                
+  height: 95vh;               
+  margin: auto;               
   background: #fff;
   border-radius: 18px;
   overflow: hidden;
@@ -271,8 +271,6 @@ button.enviar:hover:not(:disabled) { background: #c9302c; }
     min-height: 300px;
   }
 }
-
-/* Ajuste fino para telas pequenas */
 @media (max-width: 768px) {
   textarea, button.enviar { font-size: 13px; }
   .slider span { width: 38px; height: 38px; font-size: 13px; }
@@ -398,3 +396,29 @@ button.enviar:hover:not(:disabled) { background: #c9302c; }
   transition: background-color 0.25s ease;
 }
 .closeReport:hover { background-color: #b52b27; }
+
+/* ================= ABA DO CPF ================= */
+.cpf-tab {
+  font-weight: bold;       /* negrito */
+  color: red;              /* vermelho */
+  font-size: 18px;         /* tamanho maior */
+  text-align: center;      /* centralizado */
+  margin-bottom: 15px;     
+}
+
+/* ================= BOTÃO INICIAR ================= */
+button.iniciar {
+  background-color: #d9534f; /* vermelho */
+  color: white;
+  border: none;
+  border-radius: 25px;
+  font-size: 20px;          /* aumentar tamanho do texto */
+  padding: 15px 40px;       /* aumentar tamanho do botão */
+  cursor: pointer;
+  transition: 0.3s;
+  font-weight: bold;
+}
+button.iniciar:hover {
+  background-color: #c9302c;
+  transform: scale(1.05);
+}
