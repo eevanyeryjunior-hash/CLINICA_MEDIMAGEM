@@ -200,12 +200,12 @@ button.enviar:hover:not(:disabled) { background: #c9302c; }
 }
 .modal input {
   width: 100%;
-  padding: 12px;
-  border-radius: 6px;
-  border: 1px solid #ccc;
+  padding: 18px;           /* antes: 15px */
+  border-radius: 10px;     /* antes: 8px */
+  border: 1px solid #bbb;
   text-align: center;
-  font-size: 16px;
-  margin-top: 10px;
+  font-size: 20px;         /* antes: 18px */
+  margin-top: 20px;        /* antes: 15px */
 }
 .modal button {
   margin-top: 20px;
@@ -423,4 +423,5 @@ button.enviar:hover:not(:disabled) { background: #c9302c; }
   background-color: #b52b27;
   outline: none;
 }
+
 
