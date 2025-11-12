@@ -65,11 +65,19 @@ scoreSlider.addEventListener('click', (e) => {
     notaSelecionada = true;
     validarEnvio();
 
-    leftPanel.className = 'left-panel';
+     leftPanel.className = 'left-panel';
+    
     let emoji = '🙂';
-    if (notaAtual <= 3) { emoji = '😡'; leftPanel.classList.add('red'); }
-    else if (notaAtual <= 6) { emoji = '😕'; leftPanel.classList.add('orange'); }
-    else { emoji = '🤩'; leftPanel.classList.add('green'); }
+    if (notaAtual <= 1) { emoji = '😡'; leftPanel.classList.add('red'); }
+    else if (notaAtual === 2) { emoji = '😠'; leftPanel.classList.add('red'); }
+    else if (notaAtual === 3) { emoji = '😞'; leftPanel.classList.add('red'); }
+    else if (notaAtual === 4) { emoji = '🙁'; leftPanel.classList.add('orange'); }
+    else if (notaAtual === 5) { emoji = '😐'; leftPanel.classList.add('orange'); }
+    else if (notaAtual === 6) { emoji = '😕'; leftPanel.classList.add('orange'); }
+    else if (notaAtual === 7) { emoji = '🙂'; leftPanel.classList.add('green'); }
+    else if (notaAtual === 8) { emoji = '😊'; leftPanel.classList.add('green'); }
+    else if (notaAtual === 9) { emoji = '😃'; leftPanel.classList.add('green'); }
+    else if (notaAtual === 10) { emoji = '🤩'; leftPanel.classList.add('green'); }
 
     smiley.textContent = emoji;
 
@@ -201,7 +209,6 @@ function atualizarTabelaRelatorio() {
   respostas.forEach((r, i) => {
     const tr = document.createElement('tr');
     tr.innerHTML = `
-      <td>${i + 1}</td>
       <td>${r.cpf}</td> <!-- ✅ Mostra o CPF -->
       <td>${r.nota}</td>
       <td>${r.opinioes.Espera}</td>
@@ -255,3 +262,4 @@ function zerarTodasContagens() {
     alert("⚠️ Todas as contagens foram zeradas!");
   }
 }
+
