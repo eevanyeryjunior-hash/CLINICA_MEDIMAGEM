@@ -398,3 +398,8 @@ button.enviar:hover:not(:disabled) { background: #c9302c; }
   transition: background-color 0.25s ease;
 }
 .closeReport:hover { background-color: #b52b27; }
+.titulo-vermelho {
+  color: red;
+  font-weight: bold;
+}
+
