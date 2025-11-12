@@ -29,10 +29,10 @@
       <p>De 0 a 10, o quanto você recomendaria<br><strong>CLÍNICA MEDIMAGEM</strong>?</p>
       <div id="smiley" class="smiley">🙂</div>
       <div class="slider-wrapper">
-        <div class="slider" id="scoreSlider">
+        <input type="range" min="0" max="10" value="5" id="scoreSlider">
+        <div class="slider-labels">
           <span>0</span><span>1</span><span>2</span><span>3</span><span>4</span>
-          <span>5</span><span>6</span><span>7</span><span>8</span><span>9</span>
-          <span>10</span>
+          <span>5</span><span>6</span><span>7</span><span>8</span><span>9</span><span>10</span>
         </div>
       </div>
     </div>
@@ -162,18 +162,17 @@
       });
     }
 
-    // Habilitar botão ENVIAR quando houver nota ou comentário
+    // Habilitar botão ENVIAR quando houver nota selecionada ou comentário
     const scoreSlider = document.getElementById('scoreSlider');
     const comentario = document.getElementById('comentario');
     const btnEnviar = document.getElementById('btnEnviar');
 
     function atualizarBotaoEnviar() {
-      // Se houver qualquer nota selecionada (ou seja, algum clique em slider) ou comentário, habilita
-      btnEnviar.disabled = !(comentario.value.trim() !== '' || scoreSlider.querySelector('.selected') !== null);
+      btnEnviar.disabled = !(scoreSlider.value || comentario.value.trim() !== '');
     }
 
+    scoreSlider.addEventListener('input', atualizarBotaoEnviar);
     comentario.addEventListener('input', atualizarBotaoEnviar);
-    // Aqui você precisará adicionar lógica no script.js para adicionar a classe 'selected' quando uma nota for clicada
   </script>
 
 </body>
