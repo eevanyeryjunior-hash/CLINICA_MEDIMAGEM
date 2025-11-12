@@ -111,10 +111,10 @@ function validarEnvio() {
 // --- Envio feedback ---
 function enviarFeedback() {
   const comentario = document.querySelector('textarea').value.trim();
-  const cpf = cpfInput.value.trim(); // ✅ Captura o CPF atual
+  const cpf = cpfInput.value.trim();
 
   respostas.push({
-    cpf, // ✅ salva o CPF
+    cpf,
     nota: notaAtual,
     opinioes: { ...opinioes },
     comentario
@@ -165,7 +165,7 @@ function verificarLogin() {
     loginOverlay.style.display = 'none';
     reportOverlay.style.display = 'flex';
     atualizarMetricas();
-    atualizarTabelaRelatorio(); // ✅ Exibe CPF também
+    atualizarTabelaRelatorio();
   } else {
     alert('❌ Usuário ou senha incorretos!');
   }
@@ -222,55 +222,36 @@ function atualizarTabelaRelatorio() {
   });
 }
 
-// --- ✅ Função Exportar Excel (.xls) ---
-function exportXLS() {
+// --- ✅ Exportar Excel moderno (.xlsx) com "Positivo"/"Negativo" ---
+function exportXLSX() {
   if (respostas.length === 0) {
     alert("Nenhum dado para exportar.");
     return;
   }
 
-  let html = `<table border="1"><thead><tr>
-    <th>CPF</th>
-    <th>Nota</th>
-    <th>Espera</th>
-    <th>Estrutura</th>
-    <th>Recepção</th>
-    <th>Enfermagem</th>
-    <th>Médicos</th>
-    <th>Comentário</th>
-  </tr></thead><tbody>`;
+  const dados = respostas.map(r => ({
+    CPF: r.cpf,
+    Nota: r.nota,
+    Espera: r.opinioes.Espera === '👍' ? 'Positivo' : (r.opinioes.Espera === '👎' ? 'Negativo' : ''),
+    Estrutura: r.opinioes.Estrutura === '👍' ? 'Positivo' : (r.opinioes.Estrutura === '👎' ? 'Negativo' : ''),
+    Recepção: r.opinioes.Recepção === '👍' ? 'Positivo' : (r.opinioes.Recepção === '👎' ? 'Negativo' : ''),
+    Enfermagem: r.opinioes.Enfermagem === '👍' ? 'Positivo' : (r.opinioes.Enfermagem === '👎' ? 'Negativo' : ''),
+    Médicos: r.opinioes.Médicos === '👍' ? 'Positivo' : (r.opinioes.Médicos === '👎' ? 'Negativo' : ''),
+    Comentário: r.comentario || '-'
+  }));
 
-  respostas.forEach(r => {
-    html += `<tr>
-      <td>${r.cpf}</td>
-      <td>${r.nota}</td>
-      <td>${r.opinioes.Espera}</td>
-      <td>${r.opinioes.Estrutura}</td>
-      <td>${r.opinioes.Recepção}</td>
-      <td>${r.opinioes.Enfermagem}</td>
-      <td>${r.opinioes.Médicos}</td>
-      <td>${r.comentario || '-'}</td>
-    </tr>`;
-  });
+  const wb = XLSX.utils.book_new();
+  const ws = XLSX.utils.json_to_sheet(dados);
+  XLSX.utils.book_append_sheet(wb, ws, "Relatório");
 
-  html += `</tbody></table>`;
-
-  const blob = new Blob([html], { type: "application/vnd.ms-excel" });
-  const url = URL.createObjectURL(blob);
-  const a = document.createElement("a");
-  a.href = url;
-  a.download = "relatorio_pesquisa.xls";
-  document.body.appendChild(a);
-  a.click();
-  document.body.removeChild(a);
-  URL.revokeObjectURL(url);
-  alert("✅ Relatório Excel (.xls) exportado com sucesso!");
+  XLSX.writeFile(wb, "relatorio_pesquisa.xlsx");
+  alert("✅ Relatório Excel (.xlsx) exportado com sucesso!");
 }
 
 // --- Associar botão do HTML ---
 const btnExportXLS = document.getElementById('btnExportXLS');
 if (btnExportXLS) {
-  btnExportXLS.addEventListener('click', exportXLS);
+  btnExportXLS.addEventListener('click', exportXLSX);
 }
 
 // --- Funções auxiliares ---
