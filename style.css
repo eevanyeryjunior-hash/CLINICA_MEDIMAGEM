@@ -190,22 +190,22 @@ button.enviar:hover:not(:disabled) { background: #c9302c; }
 .modal {
   background: white;
   border-radius: 10px;
-  padding: 40px 20px;
-  width: 90%;
-  max-width: 400px;
-  max-height: 90vh;
+  padding: 60px 40px;
+  width: 95%;
+  max-width: 650px;
+  max-height: 94vh;
   overflow-y: auto;
   text-align: center;
   box-shadow: 0 5px 25px rgba(0,0,0,0.2);
 }
 .modal input {
   width: 100%;
-  padding: 15px;
-  border-radius: 8px;
+  padding: 18px;
+  border-radius: 10px;
   border: 1px solid #ccc;
   text-align: center;
-  font-size: 18px;
-  margin-top: 15px;
+  font-size: 20px;
+  margin-top: 20px;
 }
 .modal button {
   margin-top: 20px;
@@ -423,5 +423,6 @@ button.enviar:hover:not(:disabled) { background: #c9302c; }
   background-color: #b52b27;
   outline: none;
 }
+
 
 
