@@ -3,21 +3,25 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Pesquisa de Satisfação - Clínica Medimagem</title>
+  <title>Pesquisa de Satisfação - Clinica Medimagem</title>
   <link rel="stylesheet" href="style.css">
-  <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
 </head>
 <body>
+
+  <header class="logo-header">
+    <img src="logo.jpg" alt="Clinica medimagem">
+  </header>
 
   <!-- Modal CPF -->
   <div class="overlay" id="cpfOverlay">
     <div class="modal">
       <div class="logo-header">
-        <img src="logo.jpg" alt="Clínica Medimagem">
+        <img src="logo.jpg" alt="Clinica Medimagem">
       </div>
+
       <h3>Pesquisa de Satisfação</h3>
       <p>Preencha as informações abaixo para iniciar a pesquisa:</p>
-      <input type="tel" id="cpf" maxlength="14" inputmode="numeric" placeholder="000.000.000-00" required>
+      <input type="tel" id="cpf" maxlength="14" inputmode="numeric" placeholder="000.000.000-00">
       <button onclick="iniciarPesquisa()">INICIAR</button>
     </div>
   </div>
@@ -26,13 +30,13 @@
   <div class="container" id="formContainer">
     <div class="left-panel" id="leftPanel">
       <h2>Avalie</h2>
-      <p>De 0 a 10, o quanto você recomendaria<br><strong>CLÍNICA MEDIMAGEM</strong>?</p>
+      <p>De 0 a 10, o quanto você recomendaria<br><strong>CLINICA MEDIMAGEM</strong>?</p>
       <div id="smiley" class="smiley">🙂</div>
       <div class="slider-wrapper">
-        <input type="range" min="0" max="10" value="5" id="scoreSlider">
-        <div class="slider-labels">
+        <div class="slider" id="scoreSlider">
           <span>0</span><span>1</span><span>2</span><span>3</span><span>4</span>
-          <span>5</span><span>6</span><span>7</span><span>8</span><span>9</span><span>10</span>
+          <span>5</span><span>6</span><span>7</span><span>8</span><span>9</span>
+          <span>10</span>
         </div>
       </div>
     </div>
@@ -46,7 +50,7 @@
       <div class="feedback-row"><span>Médicos</span><div class="thumbs"><button class="down">👎</button><button class="up">👍</button></div></div>
 
       <h3>Como podemos melhorar?</h3>
-      <textarea id="comentario" placeholder="Escreva aqui..."></textarea>
+      <textarea placeholder="Escreva aqui..."></textarea>
       <button class="enviar" id="btnEnviar" onclick="enviarFeedback()" disabled>ENVIAR</button>
     </div>
   </div>
@@ -56,7 +60,7 @@
     <h2>Obrigado!</h2>
     <p>Sua opinião foi registrada com sucesso.</p>
     <p>🙏 Agradecemos sua colaboração.</p>
-    <button id="btnRelatorio" class="enviar" onclick="abrirRelatorio()">VER RELATÓRIO</button>
+    <button id="btnRelatorio" class="enviar">VER RELATÓRIO</button>
   </div>
 
   <!-- Modal de Login -->
@@ -64,96 +68,95 @@
     <div class="modal">
       <h3>Acesso Restrito</h3>
       <p>Digite seu usuário e senha para ver os relatórios.</p>
-      <input type="text" id="loginUser" placeholder="Usuário" required>
-      <input type="password" id="loginPass" placeholder="Senha" required>
+      <input type="text" id="loginUser" placeholder="Usuário">
+      <input type="password" id="loginPass" placeholder="Senha">
       <button onclick="verificarLogin()">ENTRAR</button>
     </div>
   </div>
 
   <!-- Relatório -->
   <div class="report-overlay" id="reportOverlay" style="display:none;">
-    <div class="report-modal">
-      <h3>📊 Relatórios - Clínica Medimagem</h3>
+  <div class="report-modal">
+    <h3>📊 Relatórios - Clinica Medimagem</h3>
 
-      <div class="report-header">
-        <div class="filter-group">
-          <label class="filter-title"><i class="fas fa-calendar-alt"></i> Período de Análise</label>
-          <select id="periodSelect" class="styled-select">
-            <option>Todos os dados</option>
-            <option>Últimos 7 dias</option>
-            <option>Últimos 30 dias</option>
-            <option>Últimos 90 dias</option>
-          </select>
-        </div>
+    <div class="report-header">
+      <div class="filter-group">
+        <label class="filter-title"><i class="fas fa-calendar-alt"></i> Período de Análise</label>
+        <select id="periodSelect" class="styled-select">
+          <option>Todos os dados</option>
+          <option>Últimos 7 dias</option>
+          <option>Últimos 30 dias</option>
+          <option>Últimos 90 dias</option>
+        </select>
+      </div>
 
-        <div class="categories-group">
-          <label class="filter-title"><i class="fas fa-filter"></i> Categorias Visíveis</label>
-          <div class="checkbox-list compact">
-            <label><input type="checkbox" checked> Espera</label>
-            <label><input type="checkbox" checked> Estrutura</label>
-            <label><input type="checkbox" checked> Recepção</label>
-            <label><input type="checkbox" checked> Enfermagem</label>
-            <label><input type="checkbox" checked> Médicos</label>
-          </div>
-        </div>
-
-        <div class="actions-group">
-          <label class="filter-title"><i class="fas fa-download"></i> Ações</label>
-          <button class="btn orange" id="btnExportXLS">⬇ Exportar Excel (.xls)</button>
-          <button class="btn gray" onclick="atualizarDados()">⟳ Atualizar Dados</button>
-          <button class="btn green" onclick="gerarTodasContagens()">📈 Gerar Todas as Contagens</button>
-          <button class="btn red" onclick="zerarTodasContagens()">🗑️ Zerar Todas as Contagens</button>
-          <label class="auto-refresh"><input type="checkbox" id="autoRefresh"> Auto-atualizar (5seg)</label>
+      <div class="categories-group">
+        <label class="filter-title"><i class="fas fa-filter"></i> Categorias Visíveis</label>
+        <div class="checkbox-list compact">
+          <label><input type="checkbox" checked> Espera</label>
+          <label><input type="checkbox" checked> Estrutura</label>
+          <label><input type="checkbox" checked> Recepção</label>
+          <label><input type="checkbox" checked> Enfermagem</label>
+          <label><input type="checkbox" checked> Médicos</label>
         </div>
       </div>
 
-      <hr>
-
-      <div class="metrics">
-        <div>
-          <strong id="totalRespostas">0</strong>
-          <span>Respostas</span>
-        </div>
-        <div>
-          <strong id="npsScore" style="color:#27ae60;">0</strong>
-          <span>NPS Score</span>
-        </div>
-        <div>
-          <strong id="totalComentarios">0</strong>
-          <span>Comentários</span>
-        </div>
-        <div>
-          <strong id="promotores" style="color:#9b59b6;">0%</strong>
-          <span>Promotores</span>
-        </div>
+      <div class="actions-group">
+        <label class="filter-title"><i class="fas fa-download"></i> Ações</label>
+        <button class="btn orange" id="btnExportXLS">⬇ Exportar Excel (.xls)</button>
+        <button class="btn gray" onclick="atualizarDados()">⟳ Atualizar Dados</button>
+        <button class="btn green" onclick="gerarTodasContagens()">📈 Gerar Todas as Contagens</button>
+        <button class="btn red" onclick="zerarTodasContagens()">🗑️ Zerar Todas as Contagens</button>
+        <label class="auto-refresh"><input type="checkbox"> Auto-atualizar (5seg)</label>
       </div>
-
-      <!-- Tabela de respostas detalhadas -->
-      <h4 style="margin-top: 20px; text-align:center;">Respostas Detalhadas</h4>
-      <table id="reportTable">
-        <thead>
-          <tr>
-            <th>CPF</th>
-            <th>Nota</th>
-            <th>Espera</th>
-            <th>Estrutura</th>
-            <th>Recepção</th>
-            <th>Enfermagem</th>
-            <th>Médicos</th>
-            <th>Comentário</th>
-            <th>Horário</th>
-          </tr>
-        </thead>
-        <tbody></tbody>
-      </table>
-
-      <button class="closeReport" onclick="fecharRelatorio()">Fechar</button>
     </div>
+
+    <hr>
+
+    <div class="metrics">
+      <div>
+        <strong id="totalRespostas">10</strong>
+        <span>Respostas</span>
+      </div>
+      <div>
+        <strong id="npsScore" style="color:#27ae60;">60</strong>
+        <span>NPS Score</span>
+      </div>
+      <div>
+        <strong id="totalComentarios">0</strong>
+        <span>Comentários</span>
+      </div>
+      <div>
+        <strong id="promotores" style="color:#9b59b6;">80%</strong>
+        <span>Promotores</span>
+      </div>
+    </div>
+
+    <!-- Tabela de respostas detalhadas -->
+    <h4 style="margin-top: 20px; text-align:center;">Respostas Detalhadas</h4>
+    <table id="reportTable">
+      <thead>
+        <tr>
+          <th>CPF</th>
+          <th>Nota</th>
+          <th>Espera</th>
+          <th>Estrutura</th>
+          <th>Recepção</th>
+          <th>Enfermagem</th>
+          <th>Médicos</th>
+          <th>Comentário</th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+
+    <button class="closeReport" onclick="fecharRelatorio()">Fechar</button>
   </div>
+</div>
 
   <script src="script.js"></script>
   <script>
-    // Listener do botão XLS
+    // Adicionando listener do botão XLS
     const btnExportXLS = document.getElementById('btnExportXLS');
     if(btnExportXLS) {
       btnExportXLS.addEventListener('click', function() {
@@ -161,19 +164,6 @@
         else alert("Função exportXLS não encontrada!");
       });
     }
-
-    // Habilitar botão ENVIAR quando houver nota selecionada ou comentário
-    const scoreSlider = document.getElementById('scoreSlider');
-    const comentario = document.getElementById('comentario');
-    const btnEnviar = document.getElementById('btnEnviar');
-
-    function atualizarBotaoEnviar() {
-      btnEnviar.disabled = !(scoreSlider.value || comentario.value.trim() !== '');
-    }
-
-    scoreSlider.addEventListener('input', atualizarBotaoEnviar);
-    comentario.addEventListener('input', atualizarBotaoEnviar);
   </script>
-
 </body>
 </html>
