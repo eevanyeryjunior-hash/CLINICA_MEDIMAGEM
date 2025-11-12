@@ -55,7 +55,7 @@ function iniciarPesquisa() {
 let notaSelecionada = false;
 let notaAtual = null;
 
-// --- Notas e rostinho com animação ---
+// --- Notas e rostinho ---
 scoreSlider.addEventListener('click', (e) => {
   if (e.target.tagName === 'SPAN') {
     document.querySelectorAll('.slider span').forEach(s => s.classList.remove('selected'));
@@ -67,30 +67,15 @@ scoreSlider.addEventListener('click', (e) => {
 
     leftPanel.className = 'left-panel';
     let emoji = '🙂';
-    if (notaAtual <= 1) { emoji = '😡'; leftPanel.classList.add('red'); }
-    else if (notaAtual === 2) { emoji = '😠'; leftPanel.classList.add('red'); }
-    else if (notaAtual === 3) { emoji = '😞'; leftPanel.classList.add('red'); }
-    else if (notaAtual === 4) { emoji = '🙁'; leftPanel.classList.add('orange'); }
-    else if (notaAtual === 5) { emoji = '😐'; leftPanel.classList.add('orange'); }
-    else if (notaAtual === 6) { emoji = '😕'; leftPanel.classList.add('orange'); }
-    else if (notaAtual === 7) { emoji = '🙂'; leftPanel.classList.add('green'); }
-    else if (notaAtual === 8) { emoji = '😊'; leftPanel.classList.add('green'); }
-    else if (notaAtual === 9) { emoji = '😃'; leftPanel.classList.add('green'); }
-    else if (notaAtual === 10) { emoji = '🤩'; leftPanel.classList.add('green'); }
+    if (notaAtual <= 3) { emoji = '😡'; leftPanel.classList.add('red'); }
+    else if (notaAtual <= 6) { emoji = '😕'; leftPanel.classList.add('orange'); }
+    else { emoji = '🤩'; leftPanel.classList.add('green'); }
 
     smiley.textContent = emoji;
 
-    // 🔥 Reinicia a animação do rostinho
     smiley.classList.remove('animate');
     void smiley.offsetWidth;
     smiley.classList.add('animate');
-
-    const opiniaoSection = document.querySelector('.right-panel');
-    if (opiniaoSection) {
-      opiniaoSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
-      opiniaoSection.classList.add('highlight');
-      setTimeout(() => opiniaoSection.classList.remove('highlight'), 1500);
-    }
   }
 });
 
@@ -118,8 +103,10 @@ function validarEnvio() {
 // --- Envio feedback ---
 function enviarFeedback() {
   const comentario = document.querySelector('textarea').value.trim();
+  const cpf = cpfInput.value.trim(); // ✅ Captura o CPF atual
 
   respostas.push({
+    cpf, // ✅ salva o CPF
     nota: notaAtual,
     opinioes: { ...opinioes },
     comentario
@@ -147,7 +134,6 @@ function voltarInicio() {
 
   cpfInput.value = '';
   smiley.textContent = '🙂';
-  smiley.classList.remove('animate');
   leftPanel.className = 'left-panel';
   document.querySelectorAll('.slider span').forEach(s => s.classList.remove('selected'));
   document.querySelectorAll('.thumbs button').forEach(b => b.classList.remove('selected'));
@@ -171,7 +157,7 @@ function verificarLogin() {
     loginOverlay.style.display = 'none';
     reportOverlay.style.display = 'flex';
     atualizarMetricas();
-    atualizarTabelaRelatorio(); // ✅ Mostra respostas detalhadas
+    atualizarTabelaRelatorio(); // ✅ Exibe CPF também
   } else {
     alert('❌ Usuário ou senha incorretos!');
   }
@@ -195,7 +181,7 @@ function atualizarMetricas() {
   metrics[3].textContent = percPromotores;
 }
 
-// --- ✅ NOVO: Atualizar tabela com respostas detalhadas ---
+// --- ✅ Atualizar tabela com respostas detalhadas (com CPF) ---
 function atualizarTabelaRelatorio() {
   const tbody = document.querySelector('#reportTable tbody');
   if (!tbody) return;
@@ -205,7 +191,7 @@ function atualizarTabelaRelatorio() {
   if (respostas.length === 0) {
     const tr = document.createElement('tr');
     const td = document.createElement('td');
-    td.colSpan = 7;
+    td.colSpan = 8;
     td.textContent = 'Nenhuma resposta registrada ainda.';
     tr.appendChild(td);
     tbody.appendChild(tr);
@@ -216,6 +202,7 @@ function atualizarTabelaRelatorio() {
     const tr = document.createElement('tr');
     tr.innerHTML = `
       <td>${i + 1}</td>
+      <td>${r.cpf}</td> <!-- ✅ Mostra o CPF -->
       <td>${r.nota}</td>
       <td>${r.opinioes.Espera}</td>
       <td>${r.opinioes.Estrutura}</td>
@@ -228,16 +215,16 @@ function atualizarTabelaRelatorio() {
   });
 }
 
-// --- Exportar CSV completo ---
+// --- Exportar CSV completo (com CPF) ---
 function exportCSV() {
   if (respostas.length === 0) {
     alert("Nenhum dado para exportar.");
     return;
   }
 
-  let csv = "Nota,Espera,Estrutura,Recepção,Enfermagem,Médicos,Comentário\n";
+  let csv = "CPF,Nota,Espera,Estrutura,Recepção,Enfermagem,Médicos,Comentário\n";
   respostas.forEach(r => {
-    csv += `${r.nota},${r.opinioes.Espera},${r.opinioes.Estrutura},${r.opinioes.Recepção},${r.opinioes.Enfermagem},${r.opinioes.Médicos},"${r.comentario.replace(/"/g, '""')}"\n`;
+    csv += `${r.cpf},${r.nota},${r.opinioes.Espera},${r.opinioes.Estrutura},${r.opinioes.Recepção},${r.opinioes.Enfermagem},${r.opinioes.Médicos},"${r.comentario.replace(/"/g, '""')}"\n`;
   });
 
   const blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
@@ -264,7 +251,7 @@ function zerarTodasContagens() {
     totalComentarios = 0;
     totalPromotores = 0;
     atualizarMetricas();
-    atualizarTabelaRelatorio(); // ✅ limpa a tabela também
+    atualizarTabelaRelatorio();
     alert("⚠️ Todas as contagens foram zeradas!");
   }
 }
