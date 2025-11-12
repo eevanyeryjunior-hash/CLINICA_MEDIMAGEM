@@ -22,13 +22,15 @@ body { font-family: 'Inter', sans-serif; background: #f4f8fb; color: #333; line-
 /* ================= CONTAINER PRINCIPAL ================= */
 .container {
   display: flex;
-  max-width: 900px;
-  margin: 20px auto;
+  width: 95vw;                /* ocupa 95% da largura da tela */
+  height: 95vh;               /* ocupa 95% da altura da tela */
+  margin: auto;               /* centraliza vertical e horizontalmente */
   background: #fff;
-  border-radius: 12px;
+  border-radius: 16px;
   overflow: hidden;
   flex-wrap: wrap;
-  box-shadow: 0 0 20px rgba(0,0,0,0.05);
+  box-shadow: 0 5px 25px rgba(0,0,0,0.15);
+  transition: all 0.3s ease;
 }
 
 /* ================= PAINEL ESQUERDO (NOTA) ================= */
@@ -423,6 +425,7 @@ button.enviar:hover:not(:disabled) { background: #c9302c; }
   background-color: #b52b27;
   outline: none;
 }
+
 
 
 
