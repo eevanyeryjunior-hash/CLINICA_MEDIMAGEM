@@ -52,12 +52,12 @@
   </div>
 
   <!-- Tela de Agradecimento -->
-<div class="thank-you">
-  <div class="checkmark">✔</div>
-  <h2>Obrigado!</h2>
-  <p>Sua resposta foi enviada com sucesso.</p>
-  <button id="btnRelatorio">Ver Relatório</button>
-</div>
+  <div class="thank-you" id="thankYouScreen" style="display:none;">
+    <h2>Obrigado!</h2>
+    <p>Sua opinião foi registrada com sucesso.</p>
+    <p>🙏 Agradecemos sua colaboração.</p>
+    <button id="btnRelatorio" class="enviar" onclick="abrirRelatorio()">VER RELATÓRIO</button>
+  </div>
 
   <!-- Modal de Login -->
   <div class="overlay" id="loginOverlay" style="display:none;">
@@ -178,4 +178,3 @@
 
 </body>
 </html>
-
