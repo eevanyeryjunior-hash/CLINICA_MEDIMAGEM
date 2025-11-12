@@ -1,274 +1,465 @@
-// --- Variáveis de elementos HTML ---
-const cpfInput = document.getElementById('cpf');
-const leftPanel = document.getElementById('leftPanel');
-const smiley = document.getElementById('smiley');
-const scoreSlider = document.getElementById('scoreSlider');
-const enviarBtn = document.getElementById('btnEnviar');
-const thankYouScreen = document.getElementById('thankYouScreen');
-const btnRelatorio = document.getElementById('btnRelatorio');
-const loginOverlay = document.getElementById('loginOverlay');
-const reportOverlay = document.getElementById('reportOverlay');
+/* ================= RESET & BASE ================= */
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: 'Inter', sans-serif; background: #f4f8fb; color: #333; line-height: 1.4; }
 
-// --- Contadores e armazenamento temporário ---
-let respostas = [];
-let totalRespostas = 0;
-let totalNPS = 0;
-let totalComentarios = 0;
-let totalPromotores = 0;
+/* ================= LOGO ================= */
+.logo-header {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 15px;
+}
+.logo-header img {
+  width: 160px;
+  max-width: 80%;
+  height: auto;
+  border-radius: 8px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+  transition: all 0.3s ease;
+}
+.logo-header img:hover { transform: scale(1.05); filter: brightness(1.1); }
 
-// --- Máscara CPF ---
-cpfInput.addEventListener('input', () => {
-  let value = cpfInput.value.replace(/\D/g, '');
-  value = value.replace(/(\d{3})(\d)/, '$1.$2');
-  value = value.replace(/(\d{3})(\d)/, '$1.$2');
-  value = value.replace(/(\d{3})(\d{1,2})$/, '$1-$2');
-  cpfInput.value = value;
-});
-
-// --- Validação CPF ---
-function validarCPF(cpf) {
-  cpf = cpf.replace(/[^\d]+/g, '');
-  if (cpf.length !== 11 || /^(\d)\1+$/.test(cpf)) return false;
-  let soma = 0, resto;
-  for (let i = 1; i <= 9; i++) soma += parseInt(cpf.substring(i - 1, i)) * (11 - i);
-  resto = (soma * 10) % 11;
-  if (resto === 10 || resto === 11) resto = 0;
-  if (resto !== parseInt(cpf.substring(9, 10))) return false;
-  soma = 0;
-  for (let i = 1; i <= 10; i++) soma += parseInt(cpf.substring(i - 1, i)) * (12 - i);
-  resto = (soma * 10) % 11;
-  if (resto === 10 || resto === 11) resto = 0;
-  return resto === parseInt(cpf.substring(10, 11));
+/* ================= CONTAINER PRINCIPAL ================= */
+.container {
+  display: flex;
+  width: 95vw;
+  height: 95vh;
+  margin: auto;
+  background: #fff;
+  border-radius: 18px;
+  overflow: hidden;
+  flex-wrap: nowrap;
+  box-shadow: 0 5px 25px rgba(0,0,0,0.15);
+  transition: all 0.3s ease;
 }
 
-// --- Iniciar pesquisa ---
-function iniciarPesquisa() {
-  const cpf = cpfInput.value;
-  if (!validarCPF(cpf)) {
-    alert('❌ CPF inválido. Verifique e tente novamente.');
-    return;
+/* ================= PAINEL ESQUERDO (NOTA) ================= */
+.left-panel {
+  flex: 1 1 40%;
+  background: linear-gradient(180deg, #d9534f, #c9302c);
+  color: #fff;
+  text-align: center;
+  padding: 40px 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.6s ease, transform 0.3s ease;
+}
+.left-panel.red { background: linear-gradient(180deg, #d9534f, #c9302c); }
+.left-panel.orange { background: linear-gradient(180deg, #f39c12, #e67e22); }
+.left-panel.green { background: linear-gradient(180deg, #27ae60, #1e8449); }
+
+.smiley {
+  font-size: 70px;
+  margin: 20px 0;
+  transition: transform 0.3s, filter 0.3s, text-shadow 0.3s;
+}
+.smiley.selected { transform: scale(1.15); filter: brightness(1.2); }
+
+/* ================= SLIDER DE NOTAS ================= */
+.slider-wrapper {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  overflow-x: auto;
+  margin-top: 10px;
+}
+.slider {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(42px, 1fr));
+  gap: 10px;
+  justify-content: center;
+  align-items: center;
+  max-width: 100%;
+}
+.slider span {
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.3);
+  color: white;
+  font-weight: 500;
+  font-size: 15px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  user-select: none;
+  box-shadow: inset 0 0 0 1px rgba(255,255,255,0.2);
+}
+.slider span:hover { background: rgba(255,255,255,0.4); transform: scale(1.05); }
+.slider span.selected {
+  background: white;
+  color: #d9534f;
+  font-weight: bold;
+  box-shadow: 0 0 10px rgba(255,255,255,0.7);
+  transform: scale(1.1);
+}
+
+/* ================= PAINEL DIREITO (FEEDBACK) ================= */
+.right-panel {
+  flex: 1 1 60%;
+  background: white;
+  padding: 40px 30px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+.right-panel h3 {
+  text-align: center;
+  font-weight: 600;
+  color: #555;
+  margin-bottom: 15px;
+}
+.feedback-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 10px 0;
+  border-bottom: 1px solid #eee;
+  padding-bottom: 6px;
+}
+
+/* ================= BOTÕES 👍 👎 ================= */
+.thumbs {
+  display: flex;
+  gap: 10px;
+}
+.thumbs button {
+  border: none;
+  background: #e9ecef;
+  width: 45px;
+  height: 45px;
+  border-radius: 50%;
+  font-size: 22px;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: inset 0 0 0 1px rgba(0,0,0,0.05);
+}
+.thumbs button:hover { transform: scale(1.1); filter: brightness(1.1); }
+.thumbs button:active { transform: scale(0.95); }
+.thumbs button.up.selected { background: #27ae60; color: #fff; box-shadow: 0 3px 6px rgba(39,174,96,0.4); }
+.thumbs button.down.selected { background: #e62222; color: #fff; box-shadow: 0 3px 6px rgba(230,126,34,0.4); }
+
+/* ================= TEXTAREA E BOTÃO ENVIAR ================= */
+textarea {
+  width: 100%;
+  height: 90px;
+  margin-top: 15px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  padding: 12px;
+  font-size: 15px;
+  resize: none;
+  transition: border-color 0.3s, box-shadow 0.3s;
+}
+textarea:focus {
+  outline: none;
+  border-color: #e62222;
+  box-shadow: 0 0 5px rgba(217,83,79,0.3);
+}
+button.enviar {
+  width: 100%;
+  margin-top: 20px;
+  background: #ce2e29;
+  color: white;
+  border: none;
+  border-radius: 20px;
+  font-size: 16px;
+  padding: 12px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+button.enviar:disabled { background: #ccc; cursor: not-allowed; }
+button.enviar:hover:not(:disabled) { background: #c9302c; }
+
+/* ================= MODAIS EXISTENTES ================= */
+.overlay {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  background: rgba(0,0,0,0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 10;
+}
+.modal {
+  background: white;
+  border-radius: 12px;
+  padding: 60px 40px;
+  width: 95%;
+  max-width: 650px;
+  max-height: 94vh;
+  overflow-y: auto;
+  text-align: center;
+  box-shadow: 0 5px 25px rgba(0,0,0,0.2);
+}
+.modal input {
+  width: 100%;
+  padding: 18px;
+  border-radius: 10px;
+  border: 1px solid #ccc;
+  text-align: center;
+  font-size: 20px;
+  margin-top: 20px;
+}
+.modal button {
+  margin-top: 20px;
+  background: #d9534f;
+  color: white;
+  border: none;
+  border-radius: 20px;
+  font-size: 16px;
+  padding: 10px 25px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+.modal button:hover { background: #c9302c; }
+
+/* ================= MODAL RESPONSIVO CENTRALIZADO ================= */
+.modal-responsive-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.55);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+  overflow-y: auto;
+  z-index: 1050;
+}
+.modal-responsive {
+  background: #fff;
+  border-radius: 12px;
+  padding: 40px 30px;
+  width: 100%;
+  max-width: 600px;
+  max-height: 90vh;
+  overflow-y: auto;
+  box-shadow: 0 5px 25px rgba(0,0,0,0.25);
+  text-align: center;
+  animation: modalFadeIn 0.3s ease;
+  margin: auto;
+}
+@keyframes modalFadeIn {
+  from { opacity: 0; transform: translateY(-20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.modal-responsive input {
+  width: 100%;
+  padding: 16px;
+  margin-top: 15px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  text-align: center;
+  font-size: 16px;
+}
+.modal-responsive button {
+  margin-top: 20px;
+  background: #d9534f;
+  color: white;
+  border: none;
+  border-radius: 20px;
+  font-size: 16px;
+  padding: 10px 25px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+.modal-responsive button:hover { background: #c9302c; }
+
+/* ================= TELA DE AGRADECIMENTO ================= */
+.thank-you {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  height: 60vh;
+  max-width: 90%;
+  margin: 40px auto;
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 0 20px rgba(0,0,0,0.1);
+  padding: 30px 20px;
+  opacity: 0;
+  transform: scale(0.98);
+  transition: opacity 0.5s ease, transform 0.5s ease;
+}
+.thank-you.show { opacity: 1; transform: scale(1); }
+.thank-you h2 { color: #27ae60; font-size: 2em; margin-bottom: 15px; }
+.thank-you p { color: #555; font-size: 1.1em; margin: 8px 0; }
+#btnRelatorio { width: 80%; margin-top: 15px; background: #d9534f; }
+#btnRelatorio:hover { background: #c9302c; }
+
+/* ================= ANIMAÇÃO SMILEY ================= */
+#smiley.animate { animation: bounce 0.6s ease; }
+@keyframes bounce {
+  0%   { transform: scale(1) rotate(0deg); filter: brightness(1); }
+  30%  { transform: scale(1.4) rotate(-5deg); filter: brightness(1.3); }
+  60%  { transform: scale(0.9) rotate(5deg); filter: brightness(1.1); }
+  100% { transform: scale(1) rotate(0deg); filter: brightness(1); }
+}
+.left-panel.red .smiley.animate { text-shadow: 0 0 12px rgba(255, 60, 60, 0.7); }
+.left-panel.orange .smiley.animate { text-shadow: 0 0 12px rgba(255, 150, 50, 0.7); }
+.left-panel.green .smiley.animate { text-shadow: 0 0 12px rgba(80, 255, 100, 0.7); }
+
+/* ================= RESPONSIVO ================= */
+@media (max-width: 900px) {
+  .container {
+    flex-direction: column;
+    width: 95%;
+    height: auto;
+    margin: 10px auto;
   }
-  document.getElementById('cpfOverlay').style.display = 'none';
-}
-
-// --- Controle feedback ---
-let notaSelecionada = false;
-let notaAtual = null;
-
-// --- Notas e rostinho ---
-scoreSlider.addEventListener('click', (e) => {
-  if (e.target.tagName === 'SPAN') {
-    document.querySelectorAll('.slider span').forEach(s => s.classList.remove('selected'));
-    e.target.classList.add('selected');
-
-    notaAtual = parseInt(e.target.textContent);
-    notaSelecionada = true;
-    validarEnvio();
-
-    leftPanel.className = 'left-panel';
-
-    let emoji = '🙂';
-    if (notaAtual <= 1) { emoji = '😡'; leftPanel.classList.add('red'); }
-    else if (notaAtual === 2) { emoji = '😠'; leftPanel.classList.add('red'); }
-    else if (notaAtual === 3) { emoji = '😞'; leftPanel.classList.add('red'); }
-    else if (notaAtual === 4) { emoji = '🙁'; leftPanel.classList.add('orange'); }
-    else if (notaAtual === 5) { emoji = '😐'; leftPanel.classList.add('orange'); }
-    else if (notaAtual === 6) { emoji = '😕'; leftPanel.classList.add('orange'); }
-    else if (notaAtual === 7) { emoji = '🙂'; leftPanel.classList.add('green'); }
-    else if (notaAtual === 8) { emoji = '😊'; leftPanel.classList.add('green'); }
-    else if (notaAtual === 9) { emoji = '😃'; leftPanel.classList.add('green'); }
-    else if (notaAtual === 10) { emoji = '🤩'; leftPanel.classList.add('green'); }
-
-    smiley.textContent = emoji;
-
-    smiley.classList.remove('animate');
-    void smiley.offsetWidth;
-    smiley.classList.add('animate');
+  .left-panel, .right-panel {
+    flex: 1 1 100%;
+    min-height: 300px;
   }
-});
-
-// --- Thumbs feedback ---
-const categorias = ["Espera", "Estrutura", "Recepção", "Enfermagem", "Médicos"];
-let opinioes = {};
-categorias.forEach(cat => opinioes[cat] = null);
-
-document.querySelectorAll('.thumbs button').forEach(btn => {
-  btn.addEventListener('click', () => {
-    const row = btn.closest('.feedback-row');
-    const categoria = row.querySelector('span').textContent.trim();
-    row.querySelectorAll('button').forEach(b => b.classList.remove('selected'));
-    btn.classList.add('selected');
-    opinioes[categoria] = btn.classList.contains('up') ? '👍' : '👎';
-    validarEnvio();
-  });
-});
-
-function validarEnvio() {
-  const todasAvaliadas = categorias.every(cat => opinioes[cat] !== null);
-  enviarBtn.disabled = !(notaSelecionada && todasAvaliadas);
 }
-
-// --- Envio feedback ---
-function enviarFeedback() {
-  const comentario = document.querySelector('textarea').value.trim();
-  const cpf = cpfInput.value.trim();
-
-  respostas.push({
-    cpf,
-    nota: notaAtual,
-    opinioes: { ...opinioes },
-    comentario
-  });
-
-  totalRespostas++;
-  totalNPS += notaAtual;
-  if (comentario !== "") totalComentarios++;
-  if (notaAtual >= 9) totalPromotores++;
-
-  atualizarMetricas();
-
-  document.getElementById('formContainer').style.display = 'none';
-  thankYouScreen.style.display = 'flex';
-  thankYouScreen.classList.add('show');
-  setTimeout(voltarInicio, 5000);
-}
-
-// --- Reiniciar formulário ---
-function voltarInicio() {
-  thankYouScreen.classList.remove('show');
-  thankYouScreen.style.display = 'none';
-  document.getElementById('formContainer').style.display = 'flex';
-  document.getElementById('cpfOverlay').style.display = 'flex';
-
-  cpfInput.value = '';
-  smiley.textContent = '🙂';
-  leftPanel.className = 'left-panel';
-  document.querySelectorAll('.slider span').forEach(s => s.classList.remove('selected'));
-  document.querySelectorAll('.thumbs button').forEach(b => b.classList.remove('selected'));
-  document.querySelector('textarea').value = '';
-  enviarBtn.disabled = true;
-  notaSelecionada = false;
-  notaAtual = null;
-  categorias.forEach(cat => opinioes[cat] = null);
-}
-
-// --- Login / Relatório ---
-btnRelatorio.addEventListener('click', () => {
-  loginOverlay.style.display = 'flex';
-});
-
-function verificarLogin() {
-  const user = document.getElementById('loginUser').value.trim();
-  const pass = document.getElementById('loginPass').value.trim();
-
-  if (user === 'admin' && pass === 'admin') {
-    loginOverlay.style.display = 'none';
-    reportOverlay.style.display = 'flex';
-    atualizarMetricas();
-    atualizarTabelaRelatorio();
-  } else {
-    alert('❌ Usuário ou senha incorretos!');
+@media (max-width: 768px) {
+  textarea, button.enviar { font-size: 13px; }
+  .slider span { width: 38px; height: 38px; font-size: 13px; }
+  .modal-responsive {
+    padding: 30px 20px;
+    max-width: 90%;
+  }
+  .modal-responsive input {
+    font-size: 14px;
+    padding: 14px;
+  }
+  .modal-responsive button {
+    font-size: 14px;
+    padding: 10px 20px;
   }
 }
 
-function fecharRelatorio() {
-  reportOverlay.style.display = 'none';
+/* ================= RELATÓRIO ================= */
+.report-overlay {
+  background: rgba(0, 0, 0, 0.5);
+  position: fixed;
+  inset: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
 }
-
-// --- Atualizar métricas ---
-function atualizarMetricas() {
-  const metrics = document.querySelectorAll('.metrics div strong');
-  if (metrics.length < 4) return;
-
-  const npsScore = totalRespostas > 0 ? (totalNPS / totalRespostas).toFixed(1) : 0;
-  const percPromotores = totalRespostas > 0 ? ((totalPromotores / totalRespostas) * 100).toFixed(0) + "%" : "0%";
-
-  metrics[0].textContent = totalRespostas;
-  metrics[1].textContent = npsScore;
-  metrics[2].textContent = totalComentarios;
-  metrics[3].textContent = percPromotores;
+.report-modal {
+  background: #f9fbfd;
+  border-radius: 12px;
+  padding: 25px 30px;
+  width: 90%;
+  max-width: 1100px;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.15);
+  font-family: 'Inter', sans-serif;
+  color: #333;
+  max-height: 90vh;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
 }
-
-// --- Atualizar tabela ---
-function atualizarTabelaRelatorio() {
-  const tbody = document.querySelector('#reportTable tbody');
-  if (!tbody) return;
-
-  tbody.innerHTML = '';
-
-  if (respostas.length === 0) {
-    const tr = document.createElement('tr');
-    const td = document.createElement('td');
-    td.colSpan = 8;
-    td.textContent = 'Nenhuma resposta registrada ainda.';
-    tr.appendChild(td);
-    tbody.appendChild(tr);
-    return;
-  }
-
-  respostas.forEach((r) => {
-    const tr = document.createElement('tr');
-    tr.innerHTML = `
-      <td>${r.cpf}</td>
-      <td>${r.nota}</td>
-      <td>${r.opinioes.Espera}</td>
-      <td>${r.opinioes.Estrutura}</td>
-      <td>${r.opinioes.Recepção}</td>
-      <td>${r.opinioes.Enfermagem}</td>
-      <td>${r.opinioes.Médicos}</td>
-      <td>${r.comentario || '-'}</td>
-    `;
-    tbody.appendChild(tr);
-  });
+.report-modal h3 {
+  font-weight: 700;
+  margin-bottom: 25px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 20px;
+  color: #222;
 }
-
-// --- ✅ Exportar Excel moderno (.xlsx) com "Positivo"/"Negativo" ---
-function exportXLSX() {
-  if (respostas.length === 0) {
-    alert("Nenhum dado para exportar.");
-    return;
-  }
-
-  const dados = respostas.map(r => ({
-    CPF: r.cpf,
-    Nota: r.nota,
-    Espera: r.opinioes.Espera === '👍' ? 'Positivo' : (r.opinioes.Espera === '👎' ? 'Negativo' : ''),
-    Estrutura: r.opinioes.Estrutura === '👍' ? 'Positivo' : (r.opinioes.Estrutura === '👎' ? 'Negativo' : ''),
-    Recepção: r.opinioes.Recepção === '👍' ? 'Positivo' : (r.opinioes.Recepção === '👎' ? 'Negativo' : ''),
-    Enfermagem: r.opinioes.Enfermagem === '👍' ? 'Positivo' : (r.opinioes.Enfermagem === '👎' ? 'Negativo' : ''),
-    Médicos: r.opinioes.Médicos === '👍' ? 'Positivo' : (r.opinioes.Médicos === '👎' ? 'Negativo' : ''),
-    Comentário: r.comentario || '-'
-  }));
-
-  const wb = XLSX.utils.book_new();
-  const ws = XLSX.utils.json_to_sheet(dados);
-  XLSX.utils.book_append_sheet(wb, ws, "Relatório");
-
-  XLSX.writeFile(wb, "relatorio_pesquisa.xlsx");
-  alert("✅ Relatório Excel (.xlsx) exportado com sucesso!");
+.report-header {
+  display: flex;
+  justify-content: space-between;
+  gap: 40px;
+  flex-wrap: wrap;
+  margin-bottom: 30px;
 }
-
-// --- Associar botão do HTML ---
-const btnExportXLS = document.getElementById('btnExportXLS');
-if (btnExportXLS) {
-  btnExportXLS.addEventListener('click', exportXLSX);
+.filter-group, .categories-group, .actions-group {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
 }
-
-// --- Funções auxiliares ---
-function gerarTodasContagens() {
-  alert('✅ Contagens atualizadas!');
-  atualizarMetricas();
+.filter-title {
+  font-weight: 600;
+  color: #444;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 14px;
 }
-
-function zerarTodasContagens() {
-  if (confirm("Tem certeza que deseja zerar todas as contagens?")) {
-    respostas = [];
-    totalRespostas = 0;
-    totalNPS = 0;
-    totalComentarios = 0;
-    totalPromotores = 0;
-    atualizarMetricas();
-    atualizarTabelaRelatorio();
-    alert("⚠️ Todas as contagens foram zeradas!");
-  }
+.report-modal hr {
+  border: none;
+  border-top: 1px solid #ddd;
+  margin: 15px 0 25px 0;
+}
+.metrics {
+  display: flex;
+  justify-content: space-around;
+  background: white;
+  border-radius: 14px;
+  padding: 25px 15px;
+  box-shadow: 0 3px 12px rgba(0,0,0,0.07);
+  color: #555;
+  text-align: center;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+.metrics > div {
+  flex: 1 1 120px;
+  min-width: 100px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.metrics strong {
+  font-size: 28px;
+  font-weight: 700;
+  color: #222;
+}
+.metrics span {
+  font-size: 14px;
+  text-transform: capitalize;
+  font-weight: 600;
+  color: #555;
+}
+.metrics > div:nth-child(2) strong { color: #27ae60; }
+.metrics > div:nth-child(4) strong { color: #9b59b6; }
+#reportTable {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 15px;
+}
+#reportTable th, #reportTable td {
+  border: 1px solid #ddd;
+  padding: 8px;
+  font-size: 14px;
+  text-align: center;
+  vertical-align: middle;
+}
+#reportTable th {
+  background-color: #f0f3f7;
+  font-weight: 600;
+}
+.closeReport {
+  align-self: flex-end;
+  margin-top: 25px;
+  padding: 10px 20px;
+  background-color: #e3342f;
+  border: none;
+  border-radius: 6px;
+  color: white;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.25s ease;
+}
+.closeReport:hover { background-color: #b52b27; }
+.titulo-vermelho {
+  color: red;
+  font-weight: bold;
 }
