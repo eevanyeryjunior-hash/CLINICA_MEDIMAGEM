@@ -22,25 +22,28 @@ body { font-family: 'Inter', sans-serif; background: #f4f8fb; color: #333; line-
 /* ================= CONTAINER PRINCIPAL ================= */
 .container {
   display: flex;
-  max-width: 900px;
-  margin: 20px auto;
+  width: 95vw;                /* ocupa 95% da largura da tela */
+  height: 95vh;               /* ocupa 95% da altura da tela */
+  margin: auto;               /* centraliza vertical e horizontalmente */
   background: #fff;
-  border-radius: 12px;
+  border-radius: 18px;
   overflow: hidden;
-  flex-wrap: wrap;
-  box-shadow: 0 0 20px rgba(0,0,0,0.05);
+  flex-wrap: nowrap;
+  box-shadow: 0 5px 25px rgba(0,0,0,0.15);
+  transition: all 0.3s ease;
 }
 
 /* ================= PAINEL ESQUERDO (NOTA) ================= */
 .left-panel {
-  flex: 1 1 300px;
+  flex: 1 1 40%;
   background: linear-gradient(180deg, #d9534f, #c9302c);
   color: #fff;
   text-align: center;
-  padding: 30px 20px;
+  padding: 40px 20px;
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: center;
   transition: background 0.6s ease, transform 0.3s ease;
 }
 .left-panel.red { background: linear-gradient(180deg, #d9534f, #c9302c); }
@@ -64,20 +67,20 @@ body { font-family: 'Inter', sans-serif; background: #f4f8fb; color: #333; line-
 }
 .slider {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(45px, 1fr));
-  gap: 12px;
+  grid-template-columns: repeat(auto-fill, minmax(42px, 1fr));
+  gap: 10px;
   justify-content: center;
   align-items: center;
   max-width: 100%;
 }
 .slider span {
-  width: 55px;
-  height: 55px;
+  width: 42px;
+  height: 42px;
   border-radius: 50%;
   background: rgba(255,255,255,0.3);
   color: white;
   font-weight: 500;
-  font-size: 18px;
+  font-size: 15px;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -97,9 +100,9 @@ body { font-family: 'Inter', sans-serif; background: #f4f8fb; color: #333; line-
 
 /* ================= PAINEL DIREITO (FEEDBACK) ================= */
 .right-panel {
-  flex: 1 1 300px;
+  flex: 1 1 60%;
   background: white;
-  padding: 30px 20px;
+  padding: 40px 30px;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -146,12 +149,12 @@ body { font-family: 'Inter', sans-serif; background: #f4f8fb; color: #333; line-
 /* ================= TEXTAREA E BOTÃO ENVIAR ================= */
 textarea {
   width: 100%;
-  height: 80px;
-  margin-top: 10px;
+  height: 90px;
+  margin-top: 15px;
   border-radius: 6px;
   border: 1px solid #ccc;
-  padding: 10px;
-  font-size: 14px;
+  padding: 12px;
+  font-size: 15px;
   resize: none;
   transition: border-color 0.3s, box-shadow 0.3s;
 }
@@ -188,24 +191,23 @@ button.enviar:hover:not(:disabled) { background: #c9302c; }
 }
 .modal {
   background: white;
-  border-radius: 14px;
-  padding: 60px 40px;       /* mais espaçamento interno */
+  border-radius: 12px;
+  padding: 60px 40px;
   width: 95%;
-  max-width: 650px;         /* antes: 550px */
-  max-height: 94vh;         /* levemente maior */
+  max-width: 650px;
+  max-height: 94vh;
   overflow-y: auto;
   text-align: center;
-  box-shadow: 0 10px 35px rgba(0,0,0,0.25);
-  transition: transform 0.3s ease;
+  box-shadow: 0 5px 25px rgba(0,0,0,0.2);
 }
 .modal input {
   width: 100%;
-  padding: 18px;           /* antes: 15px */
-  border-radius: 10px;     /* antes: 8px */
-  border: 1px solid #bbb;
+  padding: 18px;
+  border-radius: 10px;
+  border: 1px solid #ccc;
   text-align: center;
-  font-size: 20px;         /* antes: 18px */
-  margin-top: 20px;        /* antes: 15px */
+  font-size: 20px;
+  margin-top: 20px;
 }
 .modal button {
   margin-top: 20px;
@@ -258,12 +260,25 @@ button.enviar:hover:not(:disabled) { background: #c9302c; }
 
 /* ================= RESPONSIVO ================= */
 @media (max-width: 900px) {
-  .container { flex-direction: column; }
+  .container {
+    flex-direction: column;
+    width: 95%;
+    height: auto;
+    margin: 10px auto;
+  }
+  .left-panel, .right-panel {
+    flex: 1 1 100%;
+    min-height: 300px;
+  }
 }
+
+/* Ajuste fino para telas pequenas */
 @media (max-width: 768px) {
   textarea, button.enviar { font-size: 13px; }
+  .slider span { width: 38px; height: 38px; font-size: 13px; }
 }
-/* Overlay do relatório - fundo escurecido que cobre toda a tela */
+
+/* ================= RELATÓRIO ================= */
 .report-overlay {
   background: rgba(0, 0, 0, 0.5);
   position: fixed;
@@ -273,8 +288,6 @@ button.enviar:hover:not(:disabled) { background: #c9302c; }
   align-items: center;
   z-index: 1000;
 }
-
-/* Container principal/modal do relatório */
 .report-modal {
   background: #f9fbfd;
   border-radius: 12px;
@@ -289,8 +302,6 @@ button.enviar:hover:not(:disabled) { background: #c9302c; }
   display: flex;
   flex-direction: column;
 }
-
-/* Título do relatório dentro do modal */
 .report-modal h3 {
   font-weight: 700;
   margin-bottom: 25px;
@@ -300,8 +311,6 @@ button.enviar:hover:not(:disabled) { background: #c9302c; }
   font-size: 20px;
   color: #222;
 }
-
-/* Cabeçalho do relatório (filtros, categorias, ações) */
 .report-header {
   display: flex;
   justify-content: space-between;
@@ -309,17 +318,11 @@ button.enviar:hover:not(:disabled) { background: #c9302c; }
   flex-wrap: wrap;
   margin-bottom: 30px;
 }
-
-/* Grupos de filtros, categorias e ações dentro do header */
-.filter-group,
-.categories-group,
-.actions-group {
+.filter-group, .categories-group, .actions-group {
   display: flex;
   flex-direction: column;
   gap: 12px;
 }
-
-/* Título dos filtros */
 .filter-title {
   font-weight: 600;
   color: #444;
@@ -328,15 +331,11 @@ button.enviar:hover:not(:disabled) { background: #c9302c; }
   gap: 6px;
   font-size: 14px;
 }
-
-/* Separador horizontal */
 .report-modal hr {
   border: none;
   border-top: 1px solid #ddd;
   margin: 15px 0 25px 0;
 }
-
-/* Métricas principais do relatório (valores em destaque com legenda) */
 .metrics {
   display: flex;
   justify-content: space-around;
@@ -344,14 +343,12 @@ button.enviar:hover:not(:disabled) { background: #c9302c; }
   border-radius: 14px;
   padding: 25px 15px;
   box-shadow: 0 3px 12px rgba(0,0,0,0.07);
-  font-family: 'Inter', sans-serif;
   color: #555;
   text-align: center;
   margin-bottom: 20px;
   flex-wrap: wrap;
   gap: 20px;
 }
-
 .metrics > div {
   flex: 1 1 120px;
   min-width: 100px;
@@ -359,51 +356,35 @@ button.enviar:hover:not(:disabled) { background: #c9302c; }
   flex-direction: column;
   gap: 6px;
 }
-
 .metrics strong {
   font-size: 28px;
   font-weight: 700;
   color: #222;
 }
-
 .metrics span {
   font-size: 14px;
   text-transform: capitalize;
   font-weight: 600;
   color: #555;
 }
-
-/* Cores específicas para algumas métricas */
-.metrics > div:nth-child(2) strong {
-  color: #27ae60;
-}
-.metrics > div:nth-child(4) strong {
-  color: #9b59b6;
-}
-
-/* Tabela do relatório */
+.metrics > div:nth-child(2) strong { color: #27ae60; }
+.metrics > div:nth-child(4) strong { color: #9b59b6; }
 #reportTable {
   width: 100%;
   border-collapse: collapse;
   margin-top: 15px;
 }
-
-#reportTable th,
-#reportTable td {
+#reportTable th, #reportTable td {
   border: 1px solid #ddd;
   padding: 8px;
   font-size: 14px;
   text-align: center;
   vertical-align: middle;
 }
-
 #reportTable th {
   background-color: #f0f3f7;
   font-weight: 600;
-  user-select: none;
 }
-
-/* Botão para fechar o relatório */
 .closeReport {
   align-self: flex-end;
   margin-top: 25px;
@@ -415,13 +396,5 @@ button.enviar:hover:not(:disabled) { background: #c9302c; }
   font-weight: 600;
   cursor: pointer;
   transition: background-color 0.25s ease;
-  user-select: none;
 }
-
-.closeReport:hover,
-.closeReport:focus {
-  background-color: #b52b27;
-  outline: none;
-}
-
-
+.closeReport:hover { background-color: #b52b27; }
