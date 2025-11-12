@@ -189,7 +189,7 @@ function atualizarMetricas() {
   metrics[3].textContent = percPromotores;
 }
 
-// --- Atualizar tabela com respostas detalhadas (com CPF) ---
+// --- Atualizar tabela ---
 function atualizarTabelaRelatorio() {
   const tbody = document.querySelector('#reportTable tbody');
   if (!tbody) return;
@@ -206,7 +206,7 @@ function atualizarTabelaRelatorio() {
     return;
   }
 
-  respostas.forEach((r, i) => {
+  respostas.forEach((r) => {
     const tr = document.createElement('tr');
     tr.innerHTML = `
       <td>${r.cpf}</td>
@@ -222,8 +222,8 @@ function atualizarTabelaRelatorio() {
   });
 }
 
-// --- Exportar Excel (.xls) completo (com CPF) ---
-function exportExcel() {
+// --- ✅ Função Exportar Excel (.xls) ---
+function exportXLS() {
   if (respostas.length === 0) {
     alert("Nenhum dado para exportar.");
     return;
@@ -264,11 +264,14 @@ function exportExcel() {
   a.click();
   document.body.removeChild(a);
   URL.revokeObjectURL(url);
-  alert("✅ Relatório exportado para Excel (.xls) com sucesso!");
+  alert("✅ Relatório Excel (.xls) exportado com sucesso!");
 }
 
-// --- Associar função ao botão de exportação ---
-document.getElementById('btnExportExcel').addEventListener('click', exportExcel);
+// --- Associar botão do HTML ---
+const btnExportXLS = document.getElementById('btnExportXLS');
+if (btnExportXLS) {
+  btnExportXLS.addEventListener('click', exportXLS);
+}
 
 // --- Funções auxiliares ---
 function gerarTodasContagens() {
