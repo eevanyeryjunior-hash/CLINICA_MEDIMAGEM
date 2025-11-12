@@ -1,16 +1,6 @@
 /* ================= RESET & BASE ================= */
 * { box-sizing: border-box; margin: 0; padding: 0; }
-body, html {
-  font-family: 'Inter', sans-serif;
-  background: #f4f8fb;
-  color: #333;
-  line-height: 1.4;
-  height: 100%;
-  width: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
+body { font-family: 'Inter', sans-serif; background: #f4f8fb; color: #333; line-height: 1.4; }
 
 /* ================= LOGO ================= */
 .logo-header {
@@ -32,17 +22,15 @@ body, html {
 /* ================= CONTAINER PRINCIPAL ================= */
 .container {
   display: flex;
-  width: 95vw;
-  height: 95vh;
-  margin: auto;
+  width: 95vw;                
+  height: 95vh;               
+  margin: auto;               
   background: #fff;
   border-radius: 18px;
   overflow: hidden;
   flex-wrap: nowrap;
   box-shadow: 0 5px 25px rgba(0,0,0,0.15);
   transition: all 0.3s ease;
-  justify-content: center;
-  align-items: center;
 }
 
 /* ================= PAINEL ESQUERDO (NOTA) ================= */
@@ -118,7 +106,6 @@ body, html {
   display: flex;
   flex-direction: column;
   justify-content: center;
-  align-items: center; /* centraliza o conteúdo */
 }
 .right-panel h3 {
   text-align: center;
@@ -212,10 +199,6 @@ button.enviar:hover:not(:disabled) { background: #c9302c; }
   overflow-y: auto;
   text-align: center;
   box-shadow: 0 5px 25px rgba(0,0,0,0.2);
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
 }
 .modal input {
   width: 100%;
@@ -248,7 +231,7 @@ button.enviar:hover:not(:disabled) { background: #c9302c; }
   text-align: center;
   height: 60vh;
   max-width: 90%;
-  margin: auto;
+  margin: 40px auto;
   background: #fff;
   border-radius: 12px;
   box-shadow: 0 0 20px rgba(0,0,0,0.1);
@@ -316,8 +299,6 @@ button.enviar:hover:not(:disabled) { background: #c9302c; }
   overflow-y: auto;
   display: flex;
   flex-direction: column;
-  justify-content: center;
-  align-items: center;
 }
 .report-modal h3 {
   font-weight: 700;
@@ -398,9 +379,12 @@ button.enviar:hover:not(:disabled) { background: #c9302c; }
   text-align: center;
   vertical-align: middle;
 }
-#reportTable th { background-color: #f0f3f7; font-weight: 600; }
+#reportTable th {
+  background-color: #f0f3f7;
+  font-weight: 600;
+}
 .closeReport {
-  align-self: center;
+  align-self: flex-end;
   margin-top: 25px;
   padding: 10px 20px;
   background-color: #e3342f;
@@ -415,30 +399,33 @@ button.enviar:hover:not(:disabled) { background: #c9302c; }
 
 /* ================= ABA DO CPF ================= */
 .cpf-tab {
-  font-weight: bold;
-  color: red;
-  font-size: 18px;
-  text-align: center;
-  margin-bottom: 15px;
+  font-weight: bold;       /* negrito */
+  color: red;              /* vermelho */
+  font-size: 18px;         /* tamanho maior */
+  text-align: center;      /* centralizado */
+  margin-bottom: 15px;     
 }
 
 /* ================= BOTÃO INICIAR ================= */
 button.iniciar {
-  background-color: #d9534f;
+  background-color: #d9534f; /* vermelho */
   color: white;
   border: none;
   border-radius: 25px;
-  font-size: 20px;
-  padding: 15px 40px;
+  font-size: 20px;          /* aumentar tamanho do texto */
+  padding: 15px 40px;       /* aumentar tamanho do botão */
   cursor: pointer;
   transition: 0.3s;
   font-weight: bold;
 }
-button.iniciar:hover { background-color: #c9302c; transform: scale(1.05); }
+button.iniciar:hover {
+  background-color: #c9302c;
+  transform: scale(1.05);
+}
 
 /* ================= TÍTULO PESQUISA DE SATISFAÇÃO ================= */
 .title-red {
-  color: #d9534f;
+  color: #d9534f;  /* vermelho */
   font-weight: 700;
   text-align: center;
   margin-bottom: 20px;
