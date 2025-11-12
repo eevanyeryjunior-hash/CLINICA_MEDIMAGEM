@@ -422,3 +422,12 @@ button.iniciar:hover {
   background-color: #c9302c;
   transform: scale(1.05);
 }
+
+/* ================= TÍTULO PESQUISA DE SATISFAÇÃO ================= */
+.title-red {
+  color: #d9534f;  /* vermelho */
+  font-weight: 700;
+  text-align: center;
+  margin-bottom: 20px;
+  font-size: 24px;
+}
