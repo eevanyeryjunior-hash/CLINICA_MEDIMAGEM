@@ -9,12 +9,21 @@ const btnRelatorio = document.getElementById('btnRelatorio');
 const loginOverlay = document.getElementById('loginOverlay');
 const reportOverlay = document.getElementById('reportOverlay');
 
-// --- Contadores e armazenamento temporário ---
-let respostas = [];
-let totalRespostas = 0;
-let totalNPS = 0;
-let totalComentarios = 0;
-let totalPromotores = 0;
+// --- Contadores e armazenamento ---
+let respostas = JSON.parse(localStorage.getItem('respostas')) || [];
+let totalRespostas = parseInt(localStorage.getItem('totalRespostas')) || 0;
+let totalNPS = parseFloat(localStorage.getItem('totalNPS')) || 0;
+let totalComentarios = parseInt(localStorage.getItem('totalComentarios')) || 0;
+let totalPromotores = parseInt(localStorage.getItem('totalPromotores')) || 0;
+
+// --- Função para salvar tudo no localStorage ---
+function salvarNoLocalStorage() {
+  localStorage.setItem('respostas', JSON.stringify(respostas));
+  localStorage.setItem('totalRespostas', totalRespostas);
+  localStorage.setItem('totalNPS', totalNPS);
+  localStorage.setItem('totalComentarios', totalComentarios);
+  localStorage.setItem('totalPromotores', totalPromotores);
+}
 
 // --- Máscara CPF ---
 cpfInput.addEventListener('input', () => {
@@ -125,6 +134,7 @@ function enviarFeedback() {
   if (comentario !== "") totalComentarios++;
   if (notaAtual >= 9) totalPromotores++;
 
+  salvarNoLocalStorage(); // 🔴 Salva tudo no armazenamento local
   atualizarMetricas();
 
   document.getElementById('formContainer').style.display = 'none';
@@ -222,7 +232,7 @@ function atualizarTabelaRelatorio() {
   });
 }
 
-// --- ✅ Exportar Excel moderno (.xlsx) com "Positivo"/"Negativo" ---
+// --- Exportar Excel (.xlsx) ---
 function exportXLSX() {
   if (respostas.length === 0) {
     alert("Nenhum dado para exportar.");
@@ -248,13 +258,11 @@ function exportXLSX() {
   alert("✅ Relatório Excel (.xlsx) exportado com sucesso!");
 }
 
-// --- Associar botão do HTML ---
+// --- Botão exportar ---
 const btnExportXLS = document.getElementById('btnExportXLS');
-if (btnExportXLS) {
-  btnExportXLS.addEventListener('click', exportXLSX);
-}
+if (btnExportXLS) btnExportXLS.addEventListener('click', exportXLSX);
 
-// --- Funções auxiliares ---
+// --- Contagens e reset ---
 function gerarTodasContagens() {
   alert('✅ Contagens atualizadas!');
   atualizarMetricas();
@@ -267,8 +275,15 @@ function zerarTodasContagens() {
     totalNPS = 0;
     totalComentarios = 0;
     totalPromotores = 0;
+    salvarNoLocalStorage(); // 🔴 Limpa o armazenamento também
     atualizarMetricas();
     atualizarTabelaRelatorio();
     alert("⚠️ Todas as contagens foram zeradas!");
   }
 }
+
+// --- Ao carregar, atualiza a tela se já havia dados ---
+window.addEventListener('DOMContentLoaded', () => {
+  atualizarMetricas();
+  atualizarTabelaRelatorio();
+});
