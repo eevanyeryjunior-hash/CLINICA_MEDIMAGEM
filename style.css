@@ -614,3 +614,26 @@ button.enviar:hover:not(:disabled) { background: #c9302c; }
   }
 }
 
+/* ========= TABELA RESPONSIVA NO MOBILE ========= */
+.table-wrapper {
+  width: 100%;
+  overflow-x: auto;
+  padding-bottom: 10px;
+  -webkit-overflow-scrolling: touch;
+}
+
+.table-wrapper table {
+  min-width: 900px;
+  border-collapse: collapse;
+}
+
+@media (max-width: 600px) {
+  #reportTable th,
+  #reportTable td {
+    font-size: 12px;
+    padding: 6px;
+    white-space: nowrap;
+  }
+}
+
+
