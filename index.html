@@ -53,7 +53,7 @@
 
 <!-- Tela de Agradecimento -->
 <div class="thank-you" id="thankYouScreen" style="display:none;">
-  <div class="checkmark">✅</div> <!-- V verde acima -->
+  <div class="checkmark">✅</div>
   <h2>Obrigado!</h2>
   <p>Sua opinião foi registrada com sucesso.</p>
   <p>🙏 Agradecemos sua colaboração.</p>
@@ -120,21 +120,25 @@
 
       <!-- Tabela de respostas detalhadas -->
       <h4 style="margin-top: 20px; text-align:center;">Respostas Detalhadas</h4>
-      <table id="reportTable">
-        <thead>
-          <tr>
-            <th>CPF</th>
-            <th>Nota</th>
-            <th>Espera</th>
-            <th>Estrutura</th>
-            <th>Recepção</th>
-            <th>Enfermagem</th>
-            <th>Médicos</th>
-            <th>Comentário</th>
-          </tr>
-        </thead>
-        <tbody></tbody>
-      </table>
+
+      <!-- 🔥 NOVO WRAPPER RESPONSIVO -->
+      <div class="table-wrapper">
+        <table id="reportTable">
+          <thead>
+            <tr>
+              <th>CPF</th>
+              <th>Nota</th>
+              <th>Espera</th>
+              <th>Estrutura</th>
+              <th>Recepção</th>
+              <th>Enfermagem</th>
+              <th>Médicos</th>
+              <th>Comentário</th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+      </div>
 
       <button class="closeReport" onclick="fecharRelatorio()">Fechar</button>
     </div>
@@ -142,16 +146,5 @@
   
   <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
   <script src="script.js"></script>
-  <script>
-    // Adicionando listener do botão XLS
-    const btnExportXLS = document.getElementById('btnExportXLS');
-    if(btnExportXLS) {
-      btnExportXLS.addEventListener('click', function() {
-        if(typeof exportXLS === "function") exportXLS();
-        else alert("Função exportXLS não encontrada!");
-      });
-    }
-  </script>
 </body>
 </html>
-
