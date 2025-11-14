@@ -1,29 +1,14 @@
-/* =========================================================
-   RESET & BASE
-========================================================= */
-* {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
-}
+/* ================= RESET & BASE ================= */
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: 'Inter', sans-serif; background: #f4f8fb; color: #333; line-height: 1.4; }
 
-body {
-  font-family: 'Inter', sans-serif;
-  background: #f4f8fb;
-  color: #333;
-  line-height: 1.4;
-}
-
-/* =========================================================
-   LOGO
-========================================================= */
+/* ================= LOGO ================= */
 .logo-header {
   display: flex;
   justify-content: center;
   align-items: center;
   margin-bottom: 15px;
 }
-
 .logo-header img {
   width: 160px;
   max-width: 80%;
@@ -32,15 +17,9 @@ body {
   box-shadow: 0 2px 6px rgba(0,0,0,0.1);
   transition: all 0.3s ease;
 }
+.logo-header img:hover { transform: scale(1.05); filter: brightness(1.1); }
 
-.logo-header img:hover {
-  transform: scale(1.05);
-  filter: brightness(1.1);
-}
-
-/* =========================================================
-   CONTAINER PRINCIPAL
-========================================================= */
+/* ================= CONTAINER PRINCIPAL ================= */
 .container {
   display: flex;
   width: 95vw;
@@ -54,9 +33,7 @@ body {
   transition: all 0.3s ease;
 }
 
-/* =========================================================
-   PAINEL ESQUERDO (NOTA)
-========================================================= */
+/* ================= PAINEL ESQUERDO (NOTA) ================= */
 .left-panel {
   flex: 1 1 40%;
   background: linear-gradient(180deg, #d9534f, #c9302c);
@@ -69,7 +46,6 @@ body {
   justify-content: center;
   transition: background 0.6s ease, transform 0.3s ease;
 }
-
 .left-panel.red { background: linear-gradient(180deg, #d9534f, #c9302c); }
 .left-panel.orange { background: linear-gradient(180deg, #f39c12, #e67e22); }
 .left-panel.green { background: linear-gradient(180deg, #27ae60, #1e8449); }
@@ -79,15 +55,9 @@ body {
   margin: 20px 0;
   transition: transform 0.3s, filter 0.3s, text-shadow 0.3s;
 }
+.smiley.selected { transform: scale(1.15); filter: brightness(1.2); }
 
-.smiley.selected {
-  transform: scale(1.15);
-  filter: brightness(1.2);
-}
-
-/* =========================================================
-   SLIDER DE NOTAS
-========================================================= */
+/* ================= SLIDER DE NOTAS ================= */
 .slider-wrapper {
   width: 100%;
   display: flex;
@@ -95,7 +65,6 @@ body {
   overflow-x: auto;
   margin-top: 10px;
 }
-
 .slider {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(42px, 1fr));
@@ -104,7 +73,6 @@ body {
   align-items: center;
   max-width: 100%;
 }
-
 .slider span {
   width: 42px;
   height: 42px;
@@ -121,12 +89,7 @@ body {
   user-select: none;
   box-shadow: inset 0 0 0 1px rgba(255,255,255,0.2);
 }
-
-.slider span:hover {
-  background: rgba(255,255,255,0.4);
-  transform: scale(1.05);
-}
-
+.slider span:hover { background: rgba(255,255,255,0.4); transform: scale(1.05); }
 .slider span.selected {
   background: white;
   color: #d9534f;
@@ -135,9 +98,7 @@ body {
   transform: scale(1.1);
 }
 
-/* =========================================================
-   PAINEL DIREITO (FEEDBACK)
-========================================================= */
+/* ================= PAINEL DIREITO (FEEDBACK) ================= */
 .right-panel {
   flex: 1 1 60%;
   background: white;
@@ -146,14 +107,12 @@ body {
   flex-direction: column;
   justify-content: center;
 }
-
 .right-panel h3 {
   text-align: center;
   font-weight: 600;
   color: #555;
   margin-bottom: 15px;
 }
-
 .feedback-row {
   display: flex;
   justify-content: space-between;
@@ -163,14 +122,11 @@ body {
   padding-bottom: 6px;
 }
 
-/* =========================================================
-   BOTÕES 👍 👎
-========================================================= */
+/* ================= BOTÕES 👍 👎 ================= */
 .thumbs {
   display: flex;
   gap: 10px;
 }
-
 .thumbs button {
   border: none;
   background: #e9ecef;
@@ -185,25 +141,12 @@ body {
   justify-content: center;
   box-shadow: inset 0 0 0 1px rgba(0,0,0,0.05);
 }
-
 .thumbs button:hover { transform: scale(1.1); filter: brightness(1.1); }
 .thumbs button:active { transform: scale(0.95); }
+.thumbs button.up.selected { background: #27ae60; color: #fff; box-shadow: 0 3px 6px rgba(39,174,96,0.4); }
+.thumbs button.down.selected { background: #e62222; color: #fff; box-shadow: 0 3px 6px rgba(230,126,34,0.4); }
 
-.thumbs button.up.selected {
-  background: #27ae60;
-  color: #fff;
-  box-shadow: 0 3px 6px rgba(39,174,96,0.4);
-}
-
-.thumbs button.down.selected {
-  background: #e62222;
-  color: #fff;
-  box-shadow: 0 3px 6px rgba(230,126,34,0.4);
-}
-
-/* =========================================================
-   TEXTAREA E BOTÃO ENVIAR
-========================================================= */
+/* ================= TEXTAREA E BOTÃO ENVIAR ================= */
 textarea {
   width: 100%;
   height: 90px;
@@ -215,13 +158,11 @@ textarea {
   resize: none;
   transition: border-color 0.3s, box-shadow 0.3s;
 }
-
 textarea:focus {
   outline: none;
   border-color: #e62222;
   box-shadow: 0 0 5px rgba(217,83,79,0.3);
 }
-
 button.enviar {
   width: 100%;
   margin-top: 20px;
@@ -234,19 +175,10 @@ button.enviar {
   cursor: pointer;
   transition: 0.3s;
 }
+button.enviar:disabled { background: #ccc; cursor: not-allowed; }
+button.enviar:hover:not(:disabled) { background: #c9302c; }
 
-button.enviar:disabled {
-  background: #ccc;
-  cursor: not-allowed;
-}
-
-button.enviar:hover:not(:disabled) {
-  background: #c9302c;
-}
-
-/* =========================================================
-   MODAIS
-========================================================= */
+/* ================= MODAIS EXISTENTES ================= */
 .overlay {
   position: fixed;
   top: 0; left: 0;
@@ -257,29 +189,157 @@ button.enviar:hover:not(:disabled) {
   align-items: center;
   z-index: 10;
 }
-
-.modal,
-.modal-responsive {
+.modal {
   background: white;
   border-radius: 12px;
-  padding: 40px 30px;
+  padding: 60px 40px;
   width: 95%;
   max-width: 650px;
-  max-height: 90vh;
+  max-height: 94vh;
   overflow-y: auto;
   text-align: center;
   box-shadow: 0 5px 25px rgba(0,0,0,0.2);
-  animation: modalFadeIn 0.3s ease;
 }
+.modal input {
+  width: 100%;
+  padding: 18px;
+  border-radius: 10px;
+  border: 1px solid #ccc;
+  text-align: center;
+  font-size: 20px;
+  margin-top: 20px;
+}
+.modal button {
+  margin-top: 20px;
+  background: #d9534f;
+  color: white;
+  border: none;
+  border-radius: 20px;
+  font-size: 16px;
+  padding: 10px 25px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+.modal button:hover { background: #c9302c; }
 
+/* ================= MODAL RESPONSIVO CENTRALIZADO ================= */
+.modal-responsive-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.55);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+  overflow-y: auto;
+  z-index: 1050;
+}
+.modal-responsive {
+  background: #fff;
+  border-radius: 12px;
+  padding: 40px 30px;
+  width: 100%;
+  max-width: 600px;
+  max-height: 90vh;
+  overflow-y: auto;
+  box-shadow: 0 5px 25px rgba(0,0,0,0.25);
+  text-align: center;
+  animation: modalFadeIn 0.3s ease;
+  margin: auto;
+}
 @keyframes modalFadeIn {
   from { opacity: 0; transform: translateY(-20px); }
   to { opacity: 1; transform: translateY(0); }
 }
+.modal-responsive input {
+  width: 100%;
+  padding: 16px;
+  margin-top: 15px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  text-align: center;
+  font-size: 16px;
+}
+.modal-responsive button {
+  margin-top: 20px;
+  background: #d9534f;
+  color: white;
+  border: none;
+  border-radius: 20px;
+  font-size: 16px;
+  padding: 10px 25px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+.modal-responsive button:hover { background: #c9302c; }
 
-/* =========================================================
-   RELATÓRIO (MODAL DO RELATÓRIO)
-========================================================= */
+/* ================= TELA DE AGRADECIMENTO ================= */
+.thank-you {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  height: 60vh;
+  max-width: 90%;
+  margin: 40px auto;
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 0 20px rgba(0,0,0,0.1);
+  padding: 30px 20px;
+  opacity: 0;
+  transform: scale(0.98);
+  transition: opacity 0.5s ease, transform 0.5s ease;
+}
+.thank-you.show { opacity: 1; transform: scale(1); }
+.thank-you h2 { color: #27ae60; font-size: 2em; margin-bottom: 15px; }
+.thank-you p { color: #555; font-size: 1.1em; margin: 8px 0; }
+#btnRelatorio { width: 80%; margin-top: 15px; background: #d9534f; }
+#btnRelatorio:hover { background: #c9302c; }
+
+/* ================= ANIMAÇÃO SMILEY ================= */
+#smiley.animate { animation: bounce 0.6s ease; }
+@keyframes bounce {
+  0%   { transform: scale(1) rotate(0deg); filter: brightness(1); }
+  30%  { transform: scale(1.4) rotate(-5deg); filter: brightness(1.3); }
+  60%  { transform: scale(0.9) rotate(5deg); filter: brightness(1.1); }
+  100% { transform: scale(1) rotate(0deg); filter: brightness(1); }
+}
+.left-panel.red .smiley.animate { text-shadow: 0 0 12px rgba(255, 60, 60, 0.7); }
+.left-panel.orange .smiley.animate { text-shadow: 0 0 12px rgba(255, 150, 50, 0.7); }
+.left-panel.green .smiley.animate { text-shadow: 0 0 12px rgba(80, 255, 100, 0.7); }
+
+/* ================= RESPONSIVO ================= */
+@media (max-width: 900px) {
+  .container {
+    flex-direction: column;
+    width: 95%;
+    height: auto;
+    margin: 10px auto;
+  }
+  .left-panel, .right-panel {
+    flex: 1 1 100%;
+    min-height: 300px;
+  }
+}
+@media (max-width: 768px) {
+  textarea, button.enviar { font-size: 13px; }
+  .slider span { width: 38px; height: 38px; font-size: 13px; }
+  .modal-responsive {
+    padding: 30px 20px;
+    max-width: 90%;
+  }
+  .modal-responsive input {
+    font-size: 14px;
+    padding: 14px;
+  }
+  .modal-responsive button {
+    font-size: 14px;
+    padding: 10px 20px;
+  }
+}
+
+/* ================= RELATÓRIO ================= */
 .report-overlay {
   background: rgba(0, 0, 0, 0.5);
   position: fixed;
@@ -289,7 +349,6 @@ button.enviar:hover:not(:disabled) {
   align-items: center;
   z-index: 1000;
 }
-
 .report-modal {
   background: #f9fbfd;
   border-radius: 12px;
@@ -297,60 +356,118 @@ button.enviar:hover:not(:disabled) {
   width: 90%;
   max-width: 1100px;
   box-shadow: 0 5px 15px rgba(0,0,0,0.15);
+  font-family: 'Inter', sans-serif;
+  color: #333;
   max-height: 90vh;
   overflow-y: auto;
   display: flex;
   flex-direction: column;
 }
-
-/* =========================================================
-   TABELA DO RELATÓRIO (CORRIGIDO)
-========================================================= */
-
-/* Wrapper para rolagem horizontal */
-.table-wrapper {
+.report-modal h3 {
+  font-weight: 700;
+  margin-bottom: 25px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 20px;
+  color: #222;
+}
+.report-header {
+  display: flex;
+  justify-content: space-between;
+  gap: 40px;
+  flex-wrap: wrap;
+  margin-bottom: 30px;
+}
+.filter-group, .categories-group, .actions-group {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.filter-title {
+  font-weight: 600;
+  color: #444;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 14px;
+}
+.report-modal hr {
+  border: none;
+  border-top: 1px solid #ddd;
+  margin: 15px 0 25px 0;
+}
+.metrics {
+  display: flex;
+  justify-content: space-around;
+  background: white;
+  border-radius: 14px;
+  padding: 25px 15px;
+  box-shadow: 0 3px 12px rgba(0,0,0,0.07);
+  color: #555;
+  text-align: center;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+.metrics > div {
+  flex: 1 1 120px;
+  min-width: 100px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.metrics strong {
+  font-size: 28px;
+  font-weight: 700;
+  color: #222;
+}
+.metrics span {
+  font-size: 14px;
+  text-transform: capitalize;
+  font-weight: 600;
+  color: #555;
+}
+.metrics > div:nth-child(2) strong { color: #27ae60; }
+.metrics > div:nth-child(4) strong { color: #9b59b6; }
+#reportTable {
   width: 100%;
-  overflow-x: auto;
-  padding-bottom: 10px;
-  -webkit-overflow-scrolling: touch;
-}
-
-/* A tabela original mantém seu ID */
-.table-wrapper table {
-  min-width: 900px;
   border-collapse: collapse;
+  margin-top: 15px;
 }
-
-#reportTable th,
-#reportTable td {
+#reportTable th, #reportTable td {
   border: 1px solid #ddd;
   padding: 8px;
   font-size: 14px;
   text-align: center;
   vertical-align: middle;
 }
-
 #reportTable th {
   background-color: #f0f3f7;
   font-weight: 600;
 }
-
-/* NO MOBILE: Certo */
-@media (max-width: 600px) {
-  #reportTable th,
-  #reportTable td {
-    font-size: 12px;
-    padding: 6px;
-    white-space: nowrap;
-  }
+.closeReport {
+  align-self: flex-end;
+  margin-top: 25px;
+  padding: 10px 20px;
+  background-color: #e3342f;
+  border: none;
+  border-radius: 6px;
+  color: white;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.25s ease;
 }
+.closeReport:hover { background-color: #b52b27; }
+.titulo-vermelho {
+  color: red;
+  font-weight: bold;
+}
+/* ================= MELHORIAS DE RESPONSIVIDADE ================= */
 
-/* =========================================================
-   RESPONSIVIDADE GERAL
-========================================================= */
-
-/* Telas até 900px */
+/* Ajuste geral para telas pequenas */
 @media (max-width: 900px) {
+
   .container {
     flex-direction: column;
     width: 100%;
@@ -360,35 +477,69 @@ button.enviar:hover:not(:disabled) {
     box-shadow: none;
   }
 
-  .left-panel,
+  .left-panel {
+    padding: 25px 20px;
+    min-height: 260px;
+  }
+
   .right-panel {
-    min-height: 280px;
     padding: 25px 20px;
   }
 
-  .smiley { font-size: 55px; }
-  .slider span { width: 36px; height: 36px; font-size: 14px; }
+  .slider span {
+    width: 36px;
+    height: 36px;
+    font-size: 14px;
+  }
+
+  .smiley {
+    font-size: 55px;
+  }
 }
 
-/* Telas até 600px */
+/* Ajuste para celulares médios */
 @media (max-width: 600px) {
+
+  .right-panel h3 {
+    font-size: 18px;
+  }
+
+  .feedback-row span {
+    font-size: 14px;
+  }
+
   .thumbs button {
     width: 40px;
     height: 40px;
     font-size: 20px;
   }
 
-  button.enviar { font-size: 15px; }
-  textarea { font-size: 14px; }
+  textarea {
+    font-size: 14px;
+  }
+
+  button.enviar {
+    font-size: 15px;
+    padding: 11px;
+  }
 }
 
-/* Telas até 450px */
+/* Ajuste para celulares pequenos */
 @media (max-width: 450px) {
-  .smiley { font-size: 48px; }
+
+  .smiley {
+    font-size: 48px;
+  }
 
   .slider span {
     width: 32px;
     height: 32px;
+  }
+
+  .thumbs button {
+    width: 36px;
+    height: 36px;
+    font-size: 18px;
   }
 
   textarea {
@@ -396,6 +547,92 @@ button.enviar:hover:not(:disabled) {
     font-size: 13px;
   }
 
-  button.enviar { font-size: 14px; }
+  button.enviar {
+    font-size: 14px;
+  }
+}
+
+/* ================= TABELA DO RELATÓRIO (scroll no mobile) ================= */
+
+@media (max-width: 900px) {
+  #reportTable {
+    display: block;
+    width: 100%;
+    overflow-x: auto;
+    border: none;
+  }
+
+  #reportTable table {
+    width: max-content;
+  }
+
+  #reportTable th, #reportTable td {
+    font-size: 12px;
+    white-space: nowrap;
+  }
+
+  .report-modal {
+    padding: 15px;
+    width: 95%;
+  }
+}
+
+/* ================= MODAL ================= */
+
+@media (max-width: 550px) {
+  .modal, .modal-responsive {
+    padding: 25px 20px;
+    width: 92%;
+  }
+
+  .modal input, 
+  .modal-responsive input {
+    padding: 14px;
+    font-size: 15px;
+  }
+
+  .modal button,
+  .modal-responsive button {
+    padding: 9px 18px;
+    font-size: 15px;
+  }
+}
+
+/* ================= TELA DE AGRADECIMENTO ================= */
+
+@media (max-width: 550px) {
+  .thank-you {
+    padding: 25px 15px;
+  }
+
+  .thank-you h2 {
+    font-size: 1.6em;
+  }
+
+  .thank-you p {
+    font-size: 0.95em;
+  }
+}
+
+/* ========= TABELA RESPONSIVA NO MOBILE ========= */
+.table-wrapper {
+  width: 100%;
+  overflow-x: auto;
+  padding-bottom: 10px;
+  -webkit-overflow-scrolling: touch;
+}
+
+.table-wrapper table {
+  min-width: 900px;
+  border-collapse: collapse;
+}
+
+@media (max-width: 600px) {
+  #reportTable th,
+  #reportTable td {
+    font-size: 12px;
+    padding: 6px;
+    white-space: nowrap;
+  }
 }
 
